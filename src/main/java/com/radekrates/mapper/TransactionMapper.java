@@ -18,7 +18,6 @@ public class TransactionMapper {
                 transactionDto.getInput(),
                 transactionDto.getOutput(),
                 transactionDto.getDate(),
-                transactionDto.isAuthorized(),
                 transactionDto.isSuccessful()
         );
     }
@@ -31,14 +30,13 @@ public class TransactionMapper {
                 transaction.getInput(),
                 transaction.getOutput(),
                 transaction.getDate(),
-                transaction.isAuthorized(),
                 transaction.isSuccessful()
         );
     }
     public Set<TransactionDto> mapToTransactionDtoSet(final Set<Transaction> transactions) {
         return transactions.stream()
                 .map(t -> new TransactionDto(t.getId(), t.getFrom(),t.getTo(), t.getPairIO(), t.getInput(),
-                        t.getOutput(), t.getDate(), t.isAuthorized(), t.isSuccessful()))
+                        t.getOutput(), t.getDate(), t.isSuccessful()))
                 .collect(Collectors.toSet());
     }
 }

@@ -4,6 +4,7 @@ import com.radekrates.domain.Iban;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -21,4 +22,8 @@ public interface IbanRepository extends CrudRepository<Iban, Long> {
     void deleteAll();
     @Override
     long count();
+
+    List<Iban> findByIbanSignature(String ibansinature);
+
+    List<Iban> findByIbanNumber(String ibannumber);
 }

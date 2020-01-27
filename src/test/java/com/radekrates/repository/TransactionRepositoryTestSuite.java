@@ -18,7 +18,8 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class TransactionRepositoryTestSuite {
-    @Autowired TransactionRepository transactionRepository;
+    @Autowired
+    private TransactionRepository transactionRepository;
     private Transaction transaction1;
     private Transaction transaction2;
 
@@ -31,7 +32,6 @@ public class TransactionRepositoryTestSuite {
                 new BigDecimal("2.2"),
                 new BigDecimal("3.3"),
                 LocalDate.of(2001, 1, 1),
-                true,
                 true
         );
         transaction2 = new Transaction(
@@ -41,10 +41,10 @@ public class TransactionRepositoryTestSuite {
                 new BigDecimal("2.5"),
                 new BigDecimal("3.5"),
                 LocalDate.of(2000, 1, 1),
-                false,
                 false
         );
     }
+
     @Test
     public void testSaveTransactions() {
         //Given
@@ -55,6 +55,7 @@ public class TransactionRepositoryTestSuite {
         //Then
         assertTrue(transactionDb.isPresent());
     }
+
     @Test
     public void testTransactionsSize() {
         //Given
@@ -66,6 +67,7 @@ public class TransactionRepositoryTestSuite {
         assertEquals(2, transactions.size());
         assertEquals(2, (int) counts);
     }
+
     @Test
     public void testFindTransactionById() {
         //Given
@@ -80,6 +82,7 @@ public class TransactionRepositoryTestSuite {
         assertEquals(transaction1.getPairIO(), transaction1Db.get().getPairIO());
         assertEquals(transaction2.getDate(), transaction2Db.get().getDate());
     }
+
     @Test
     public void testDeleteTransactionById() {
         //When
@@ -95,6 +98,7 @@ public class TransactionRepositoryTestSuite {
         assertTrue(transaction2Db.isPresent() && !transaction1Db.isPresent());
         assertEquals(1, transactions.size());
     }
+
     @After
     public void transactionCleanUp() {
         transactionRepository.deleteAll();

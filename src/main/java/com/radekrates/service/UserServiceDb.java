@@ -15,7 +15,7 @@ public class UserServiceDb {
     private UserRepository userRepository;
 
     public User saveUser(final User user) {
-        log.info("User has been saved in database: " + user.getEMail());
+        log.info("User has been saved in database: " + user.getEmail());
         return userRepository.save(user);
     }
     public void deleteUserById(final Long userId) {

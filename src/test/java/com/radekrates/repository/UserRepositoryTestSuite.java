@@ -35,7 +35,7 @@ public class UserRepositoryTestSuite {
                 "Lazur",
                 30,
                 "Poland",
-                true,
+                false,
                 false
         );
         user2 = new User(
@@ -46,9 +46,10 @@ public class UserRepositoryTestSuite {
                 30,
                 "Poland",
                 false,
-                true
+                false
         );
     }
+
     @Test
     public void testSaveUsers() {
         //Given
@@ -59,10 +60,12 @@ public class UserRepositoryTestSuite {
         //Then
         assertTrue(userDb.isPresent());
     }
+
     @Test
     public void testUsersSize() {
         //Given
-        userRepository.save(user1); userRepository.save(user2);
+        userRepository.save(user1);
+        userRepository.save(user2);
         //When
         Set<User> users = userRepository.findAll();
         long counts = userRepository.count();
@@ -70,10 +73,12 @@ public class UserRepositoryTestSuite {
         assertEquals(2, users.size());
         assertEquals(2, (int) counts);
     }
+
     @Test
     public void testFindUserById() {
         //Given
-        userRepository.save(user1); userRepository.save(user2);
+        userRepository.save(user1);
+        userRepository.save(user2);
         Long user1Id = user1.getId();
         Long user2Id = user2.getId();
         //When
@@ -81,9 +86,22 @@ public class UserRepositoryTestSuite {
         Optional<User> user2Db = userRepository.findById(user2Id);
         //Then
         assertTrue(user1Db.isPresent() && user2Db.isPresent());
-        assertEquals(user1.getEMail(), user1Db.get().getEMail());
+        assertEquals(user1.getEmail(), user1Db.get().getEmail());
         assertEquals(user2.isBlocked(), user2Db.get().isBlocked());
     }
+
+    @Test
+    public void testFindUserByEmail() {
+        //Given
+        userRepository.save(user1);
+        Long user1Id = user1.getId();
+        //When
+        Optional<User> user1Db = userRepository.findByEmail("radoslaw.lazur@gmail.com");
+        //Then
+        assertTrue(user1Db.isPresent());
+        assertEquals(user1.getEmail(), user1Db.get().getEmail());
+    }
+
     @Test
     public void testSaveTransactionToUser() {
         //Given
@@ -94,7 +112,6 @@ public class UserRepositoryTestSuite {
                 new BigDecimal("2.5"),
                 new BigDecimal("3.5"),
                 LocalDate.of(2000, 1, 1),
-                false,
                 false
         );
         Transaction transaction2 = new Transaction(
@@ -104,15 +121,17 @@ public class UserRepositoryTestSuite {
                 new BigDecimal("2.5"),
                 new BigDecimal("3.5"),
                 LocalDate.of(2000, 1, 1),
-                false,
                 false
         );
         user1.getTransactions().add(transaction1);
         user2.getTransactions().add(transaction2);
-        transaction1.setUser(user1); transaction2.setUser(user2);
+        transaction1.setUser(user1);
+        transaction2.setUser(user2);
         //When
-        userRepository.save(user1); userRepository.save(user2);
-        Long user1Id = user1.getId(); Long user2Id = user2.getId();
+        userRepository.save(user1);
+        userRepository.save(user2);
+        Long user1Id = user1.getId();
+        Long user2Id = user2.getId();
         Optional<User> user1Db = userRepository.findById(user1Id);
         Optional<User> user2Db = userRepository.findById(user2Id);
         //Then
@@ -122,6 +141,7 @@ public class UserRepositoryTestSuite {
         assertEquals(1, user1Db.get().getTransactions().size());
         assertEquals(1, user2Db.get().getTransactions().size());
     }
+
     @Test
     public void testSaveIbanToUser() {
         //Given
@@ -139,19 +159,23 @@ public class UserRepositoryTestSuite {
         );
         user1.getIbans().add(iban1);
         user2.getIbans().add(iban2);
-        iban1.setUser(user1); iban2.setUser(user2);
+        iban1.setUser(user1);
+        iban2.setUser(user2);
         //When
-        userRepository.save(user1); userRepository.save(user2);
-        Long user1Id = user1.getId(); Long user2Id = user2.getId();
+        userRepository.save(user1);
+        userRepository.save(user2);
+        Long user1Id = user1.getId();
+        Long user2Id = user2.getId();
         Optional<User> user1Db = userRepository.findById(user1Id);
         Optional<User> user2Db = userRepository.findById(user2Id);
         //Then
-        assertTrue(user1Db.isPresent() && user2Db.isPresent());
+         assertTrue(user1Db.isPresent() && user2Db.isPresent());
         assertNotEquals(0, user1Db.get().getId().intValue());
         assertNotEquals(0, user2Db.get().getId().intValue());
         assertEquals(1, user1Db.get().getIbans().size());
         assertEquals(1, user2Db.get().getIbans().size());
     }
+
     @After
     public void userCleanUp() {
         userRepository.deleteAll();

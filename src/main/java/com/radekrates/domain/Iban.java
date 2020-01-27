@@ -1,6 +1,5 @@
 package com.radekrates.domain;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +12,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
-@Table(name = "IBANS")
+@Entity(name = "IBANS")
 public class Iban {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,29 +1,25 @@
 package com.radekrates.controller.datafixerapi;
 
-import com.radekrates.api.datafixerio.ClientDataFixerIo;
-import com.radekrates.service.apireader.DataFixerJsonReader;
-import com.radekrates.service.apireader.DataFixerEurBase;
+import com.radekrates.api.datafixerio.client.DataFixerClient;
+import com.radekrates.domain.datafixerio.dto.DataFixerDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @CrossOrigin(origins = "*")
 @RestController
-@Component
-@RequestMapping("/v1/fixer")
+@RequestMapping("/v1/dataFixer")
 public class DataFixerController {
     @Autowired
-    private ClientDataFixerIo clientDataFixerIo;
-    private DataFixerJsonReader dataFixerJsonReader = new DataFixerJsonReader();
+    private DataFixerClient dataFixerClient;
 
-    @GetMapping(value = "showRates")
-    public void showRates() {
-        String json = clientDataFixerIo.getJsonString();
-        DataFixerEurBase dataFixerEurBase = dataFixerJsonReader.saveRatesBasedOnEur(json);
-        System.out.println(dataFixerEurBase.getEur());
-        System.out.println(dataFixerEurBase.getChf());
-        System.out.println(dataFixerEurBase.getUsd());
-        System.out.println(dataFixerEurBase.getPln());
-        System.out.println(dataFixerEurBase.getGbp());
+    @GetMapping(value = "getDataFixer")
+    public DataFixerDto getDataFixerData() {
+        log.info("FixerData has been downloaded");
+        return dataFixerClient.getDataFixerData();
     }
 }

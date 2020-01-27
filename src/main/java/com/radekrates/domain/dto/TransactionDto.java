@@ -16,6 +16,5 @@ public class TransactionDto {
     private BigDecimal input;
     private BigDecimal output;
     private LocalDate date;
-    private boolean isAuthorized;
     private boolean isSuccessful;
 }

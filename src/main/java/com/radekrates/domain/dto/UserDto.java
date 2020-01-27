@@ -13,6 +13,6 @@ public class UserDto {
     private String userLastName;
     private int age;
     private String country;
-    private boolean isLoggedIn;
+    private boolean isActive;
     private boolean isBlocked;
 }

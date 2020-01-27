@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,8 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
-@Table(name = "USERS")
+@Entity(name = "USERS")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,8 +23,8 @@ public class User {
     @Column(name = "USER_ID")
     private Long id;
     @NotNull
-    @Column(name = "USER_EMAIL")
-    private String eMail;
+    @Column(name = "USER_EMAIL", unique = true)
+    private String email;
     @NotNull
     @Column(name = "USER_PASSWORD")
     private String password;
@@ -41,8 +41,8 @@ public class User {
     @Column(name = "USER_COUNTRY")
     private String country;
     @NotNull
-    @Column(name = "USER_LOGGEDIN")
-    private boolean isLoggedIn;
+    @Column(name = "USER_ISACTIVE")
+    private boolean isActive;
     @NotNull
     @Column(name = "USER_BLOCKED")
     private boolean isBlocked;
@@ -61,27 +61,27 @@ public class User {
     )
     private Set<Transaction> transactions = new HashSet<>();
 
-    public User(Long id, String eMail, String password, String userFirstName, String userLastName, int age,
-                String country, boolean isLoggedIn, boolean isBlocked) {
+    public User(Long id, String email, String password, String userFirstName, String userLastName, int age,
+                String country, boolean isActive, boolean isBlocked) {
         this.id = id;
-        this.eMail = eMail;
+        this.email = email;
         this.password = password;
         this.userFirstName = userFirstName;
         this.userLastName = userLastName;
         this.age = age;
         this.country = country;
-        this.isLoggedIn = isLoggedIn;
+        this.isActive = isActive;
         this.isBlocked = isBlocked;
     }
-    public User(String eMail, String password, String userFirstName, String userLastName, int age, String country,
-                boolean isLoggedIn, boolean isBlocked) {
-        this.eMail = eMail;
+    public User(String email, String password, String userFirstName, String userLastName, int age, String country,
+                boolean isActive, boolean isBlocked) {
+        this.email = email;
         this.password = password;
         this.userFirstName = userFirstName;
         this.userLastName = userLastName;
         this.age = age;
         this.country = country;
-        this.isLoggedIn = isLoggedIn;
+        this.isActive = isActive;
         this.isBlocked = isBlocked;
     }
 }

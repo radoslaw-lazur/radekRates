@@ -8,6 +8,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import static org.junit.Assert.assertEquals;
@@ -36,6 +38,7 @@ public class IbanRepositoryTestSuite {
                 "222"
         );
     }
+
     @Test
     public void testSaveIbans() {
         //Given
@@ -46,6 +49,7 @@ public class IbanRepositoryTestSuite {
         //Given
         assertTrue(ibanDb.isPresent());
     }
+
     @Test
     public void testIbanSize() {
         //Given
@@ -57,6 +61,7 @@ public class IbanRepositoryTestSuite {
         assertEquals(2, ibans.size());
         assertEquals(2, (int) counts);
     }
+
     @Test
     public void testFindIbanById() {
         //Given
@@ -71,8 +76,9 @@ public class IbanRepositoryTestSuite {
         assertEquals(iban1.getIbanSignature(), iban1Db.get().getIbanSignature());
         assertEquals(iban2.getIbanSignature(), iban2Db.get().getIbanSignature());
     }
+
     @Test
-    public void deleteIbanById() {
+    public void testDeleteIbanById() {
         //Given
         ibanRepository.save(iban1); ibanRepository.save(iban2);
         Long iban1Id = iban1.getId();
@@ -86,6 +92,33 @@ public class IbanRepositoryTestSuite {
         assertTrue(iban2Db.isPresent() && !iban1Db.isPresent());
         assertEquals(1, ibans.size());
     }
+
+    @Test
+    public void testFindIbanBySignature() {
+        //Given
+        ibanRepository.save(iban1); ibanRepository.save(iban2);
+        Long iban1Id = iban1.getId();
+        Long iban2Id = iban2.getId();
+        //When
+        List<Iban> ibansFromDb = ibanRepository.findByIbanSignature("PL");
+        //Then
+        assertEquals(1, ibansFromDb.size());
+        assertEquals(iban1.getIbanSignature(), ibansFromDb.get(0).getIbanSignature());
+    }
+
+    @Test
+    public void testFindIbanByIbanNumber() {
+        //Given
+        ibanRepository.save(iban1); ibanRepository.save(iban2);
+        Long iban1Id = iban1.getId();
+        Long iban2Id = iban2.getId();
+        //When
+        List<Iban> ibansFromDb = ibanRepository.findByIbanNumber("111");
+        //Then
+        assertEquals(1, ibansFromDb.size());
+        assertEquals(iban1.getIbanNumber(), ibansFromDb.get(0).getIbanNumber());
+    }
+
     @After
     public void ibansCleanUp() {
         ibanRepository.deleteAll();

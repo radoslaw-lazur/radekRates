@@ -14,8 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
-@Table(name = "TRANSACTIONS")
+@Entity(name = "TRANSACTIONS")
 public class Transaction {
     @Id
     @GeneratedValue
@@ -41,9 +40,6 @@ public class Transaction {
     @Column(name = "TRANSACTION_DATE")
     private LocalDate date;
     @NotNull
-    @Column(name = "TRANSACTION_AUTHORIZED")
-    private boolean isAuthorized;
-    @NotNull
     @Column(name = "TRANSACTION_SUCCESSFUL")
     private boolean isSuccessful;
     @ManyToOne
@@ -51,7 +47,7 @@ public class Transaction {
     private User user;
 
     public Transaction(Long id, String from, String to, String pairIO, BigDecimal input, BigDecimal output,
-                       LocalDate date, boolean isAuthorized, boolean isSuccessful) {
+                       LocalDate date, boolean isSuccessful) {
         this.id = id;
         this.from = from;
         this.to = to;
@@ -59,18 +55,17 @@ public class Transaction {
         this.input = input;
         this.output = output;
         this.date = date;
-        this.isAuthorized = isAuthorized;
+
         this.isSuccessful = isSuccessful;
     }
     public Transaction(String from, String to, String pairIO, BigDecimal input, BigDecimal output, LocalDate date,
-                       boolean isAuthorized, boolean isSuccessful) {
+                       boolean isSuccessful) {
         this.from = from;
         this.to = to;
         this.pairIO = pairIO;
         this.input = input;
         this.output = output;
         this.date = date;
-        this.isAuthorized = isAuthorized;
         this.isSuccessful = isSuccessful;
     }
 }

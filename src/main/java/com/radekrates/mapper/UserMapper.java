@@ -18,27 +18,27 @@ public class UserMapper {
                 userDto.getUserLastName(),
                 userDto.getAge(),
                 userDto.getCountry(),
-                userDto.isLoggedIn(),
+                userDto.isActive(),
                 userDto.isBlocked()
         );
     }
     public UserDto mapToUserDto(final User user) {
         return new UserDto(
                 user.getId(),
-                user.getEMail(),
+                user.getEmail(),
                 user.getPassword(),
                 user.getUserFirstName(),
                 user.getUserLastName(),
                 user.getAge(),
                 user.getCountry(),
-                user.isLoggedIn(),
+                user.isActive(),
                 user.isBlocked()
         );
     }
     public Set<UserDto> mapToUserDtoSet(final Set<User> users) {
         return users.stream()
-                .map(u -> new UserDto(u.getId(), u.getEMail(), u.getPassword(), u.getUserFirstName(),
-                        u.getUserLastName(), u.getAge(), u.getCountry(), u.isLoggedIn(), u.isBlocked()))
+                .map(u -> new UserDto(u.getId(), u.getEmail(), u.getPassword(), u.getUserFirstName(),
+                        u.getUserLastName(), u.getAge(), u.getCountry(), u.isActive(), u.isBlocked()))
                 .collect(Collectors.toSet());
     }
 }
