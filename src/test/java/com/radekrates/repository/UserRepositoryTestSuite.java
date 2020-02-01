@@ -148,13 +148,11 @@ public class UserRepositoryTestSuite {
         Iban iban1 = new Iban(
                 "bankName",
                 "bankLocalisation",
-                "PL",
                 "111"
         );
         Iban iban2 = new Iban(
                 "bankName",
                 "bankLocalisation",
-                "NL",
                 "222"
         );
         user1.getIbans().add(iban1);

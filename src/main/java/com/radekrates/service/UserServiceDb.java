@@ -40,4 +40,7 @@ public class UserServiceDb {
     public long countAll() {
         return userRepository.count();
     }
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    }
 }
