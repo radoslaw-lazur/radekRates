@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import static org.junit.Assert.assertEquals;
@@ -98,10 +97,10 @@ public class IbanRepositoryTestSuite {
         Long iban1Id = iban1.getId();
         Long iban2Id = iban2.getId();
         //When
-        List<Iban> ibansFromDb = ibanRepository.findByIbanNumber("111");
+        Optional<Iban> ibanFromDb = ibanRepository.findByIbanNumber("111");
         //Then
-        assertEquals(1, ibansFromDb.size());
-        assertEquals(iban1.getIbanNumber(), ibansFromDb.get(0).getIbanNumber());
+        assertTrue(ibanFromDb.isPresent());
+        assertEquals(iban1.getIbanNumber(), ibanFromDb.get().getIbanNumber());
     }
 
     @After

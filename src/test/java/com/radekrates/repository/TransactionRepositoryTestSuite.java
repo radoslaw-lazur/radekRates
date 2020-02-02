@@ -26,22 +26,26 @@ public class TransactionRepositoryTestSuite {
     @Before
     public void createTransactions() {
         transaction1 = new Transaction(
-                "from",
-                "to",
-                "pairIO",
-                new BigDecimal("2.2"),
-                new BigDecimal("3.3"),
-                LocalDate.of(2001, 1, 1),
-                true
+                "inputIbanNumber",
+                "outputIbanNumber",
+                "PLN-EUR",
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                LocalDate.of(2020, 1, 1)
         );
         transaction2 = new Transaction(
-                "from",
-                "to",
-                "pairIO",
-                new BigDecimal("2.5"),
-                new BigDecimal("3.5"),
-                LocalDate.of(2000, 1, 1),
-                false
+                "inputIbanNumber",
+                "outputIbanNumber",
+                "PLN-EUR",
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                LocalDate.of(2020, 2, 1)
         );
     }
 
@@ -79,7 +83,7 @@ public class TransactionRepositoryTestSuite {
         Optional<Transaction> transaction2Db = transactionRepository.findById(transaction2Id);
         //Then
         assertTrue(transaction1Db.isPresent() && transaction2Db.isPresent());
-        assertEquals(transaction1.getPairIO(), transaction1Db.get().getPairIO());
+        assertEquals(transaction1.getPairOfCurrencies(), transaction1Db.get().getPairOfCurrencies());
         assertEquals(transaction2.getDate(), transaction2Db.get().getDate());
     }
 

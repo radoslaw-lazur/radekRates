@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UniqueElements;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -23,7 +23,7 @@ public class User {
     @Column(name = "USER_ID")
     private Long id;
     @NotNull
-    @Column(name = "USER_EMAIL", unique = true)
+    @Column(name = "USER_EMAIL")
     private String email;
     @NotNull
     @Column(name = "USER_PASSWORD")

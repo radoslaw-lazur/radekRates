@@ -10,11 +10,13 @@ import java.time.LocalDate;
 @Getter
 public class TransactionDto {
     private Long id;
-    private String from;
-    private String to;
-    private String pairIO;
-    private BigDecimal input;
-    private BigDecimal output;
+    private String inputIbanNumber;
+    private String outputIbanNumber;
+    private String pairOfCurrencies;
+    private BigDecimal inputValue;
+    private BigDecimal outputValue;
+    private BigDecimal apiCurrencyPurchaseMultiplier;
+    private BigDecimal currencySaleMultiplier;
+    private BigDecimal profit;
     private LocalDate date;
-    private boolean isSuccessful;
 }

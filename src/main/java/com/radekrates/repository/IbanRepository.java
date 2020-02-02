@@ -22,5 +22,6 @@ public interface IbanRepository extends CrudRepository<Iban, Long> {
     void deleteAll();
     @Override
     long count();
-    List<Iban> findByIbanNumber(String ibannumber);
+
+    Optional<Iban> findByIbanNumber(String ibannumber);
 }

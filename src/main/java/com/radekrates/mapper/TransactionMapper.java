@@ -12,31 +12,37 @@ public class TransactionMapper {
     public Transaction mapToTransaction(final TransactionDto transactionDto) {
         return new Transaction(
                 transactionDto.getId(),
-                transactionDto.getFrom(),
-                transactionDto.getTo(),
-                transactionDto.getPairIO(),
-                transactionDto.getInput(),
-                transactionDto.getOutput(),
-                transactionDto.getDate(),
-                transactionDto.isSuccessful()
+                transactionDto.getInputIbanNumber(),
+                transactionDto.getOutputIbanNumber(),
+                transactionDto.getPairOfCurrencies(),
+                transactionDto.getInputValue(),
+                transactionDto.getOutputValue(),
+                transactionDto.getApiCurrencyPurchaseMultiplier(),
+                transactionDto.getCurrencySaleMultiplier(),
+                transactionDto.getProfit(),
+                transactionDto.getDate()
         );
     }
     public TransactionDto mapToTransactionDto(final Transaction transaction) {
         return new TransactionDto(
                 transaction.getId(),
-                transaction.getFrom(),
-                transaction.getTo(),
-                transaction.getPairIO(),
-                transaction.getInput(),
-                transaction.getOutput(),
-                transaction.getDate(),
-                transaction.isSuccessful()
+                transaction.getInputIbanNumber(),
+                transaction.getOutputIbanNumber(),
+                transaction.getPairOfCurrencies(),
+                transaction.getInputValue(),
+                transaction.getOutputValue(),
+                transaction.getApiCurrencyPurchaseMultiplier(),
+                transaction.getCurrencySaleMultiplier(),
+                transaction.getProfit(),
+                transaction.getDate()
         );
     }
     public Set<TransactionDto> mapToTransactionDtoSet(final Set<Transaction> transactions) {
         return transactions.stream()
-                .map(t -> new TransactionDto(t.getId(), t.getFrom(),t.getTo(), t.getPairIO(), t.getInput(),
-                        t.getOutput(), t.getDate(), t.isSuccessful()))
+                .map(t -> new TransactionDto(t.getId(), t.getInputIbanNumber(),t.getOutputIbanNumber(),
+                        t.getPairOfCurrencies(), t.getInputValue(), t.getOutputValue(),
+                        t.getApiCurrencyPurchaseMultiplier(), t.getCurrencySaleMultiplier(),
+                        t.getProfit(), t.getDate()))
                 .collect(Collectors.toSet());
     }
 }

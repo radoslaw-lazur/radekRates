@@ -21,22 +21,37 @@ public class IbanController {
     public void saveIban(@RequestBody IbanDto ibanDto) {
         ibanServiceDb.saveIban(ibanMapper.mapToIban(ibanDto));
     }
+
+    @GetMapping(value = "saveIbanToUser")
+    public void saveIbanToUser(@RequestParam String userEmail, @RequestParam String ibanNumber) {
+        ibanServiceDb.saveIbanToUser(userEmail, ibanNumber);
+    }
+
     @PutMapping(value = "updateIban")
     public IbanDto updateIban(@RequestBody IbanDto ibanDto) {
         return ibanMapper.mapToIbanDto(ibanServiceDb.saveIban(ibanMapper.mapToIban(ibanDto)));
     }
+
     @DeleteMapping(value = "deleteIban")
     public void deleteIban(@RequestParam Long ibanId) {
         ibanServiceDb.deleteIbanById(ibanId);
     }
+
     @GetMapping(value = "getIban")
     public IbanDto getIban(@RequestParam Long ibanId) {
         return ibanMapper.mapToIbanDto(ibanServiceDb.getIbanById(ibanId));
     }
-    @GetMapping(value = "getIbans")
+
+    @GetMapping(value = "getIbans") 
     public Set<IbanDto> getIbans() {
         return ibanMapper.mapToIbanDtoSet(ibanServiceDb.getAllIbans());
     }
+
+    @GetMapping(value = "getIbansRelatedToUser")
+    public Set<IbanDto> getIbansRelatedToUser(@RequestParam String userEmail) {
+        return ibanMapper.mapToIbanDtoSet(ibanServiceDb.getIbansRelatedToUser(userEmail));
+    }
+
     @DeleteMapping(value = "deleteAllIbans")
     public void deleteAllIbans() {
         ibanServiceDb.deleteAllIbans();

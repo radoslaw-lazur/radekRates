@@ -11,7 +11,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 @Component
-public class Base {
+public class CurrrencyCalculator {
     @Autowired
     private DataFixerClient dataFixerClient;
     private DataFixerDto dataFixerDto;

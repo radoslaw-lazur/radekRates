@@ -106,22 +106,26 @@ public class UserRepositoryTestSuite {
     public void testSaveTransactionToUser() {
         //Given
         Transaction transaction1 = new Transaction(
-                "from",
-                "to",
-                "pairIO",
-                new BigDecimal("2.5"),
-                new BigDecimal("3.5"),
-                LocalDate.of(2000, 1, 1),
-                false
+                "inputIbanNumber",
+                "outputIbanNumber",
+                "PLN-EUR",
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                LocalDate.of(2020, 1, 1)
         );
         Transaction transaction2 = new Transaction(
-                "from",
-                "to",
-                "pairIO",
-                new BigDecimal("2.5"),
-                new BigDecimal("3.5"),
-                LocalDate.of(2000, 1, 1),
-                false
+                "inputIbanNumber",
+                "outputIbanNumber",
+                "PLN-EUR",
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                new BigDecimal("1"),
+                LocalDate.of(2019, 1, 1)
         );
         user1.getTransactions().add(transaction1);
         user2.getTransactions().add(transaction2);
@@ -167,7 +171,7 @@ public class UserRepositoryTestSuite {
         Optional<User> user1Db = userRepository.findById(user1Id);
         Optional<User> user2Db = userRepository.findById(user2Id);
         //Then
-         assertTrue(user1Db.isPresent() && user2Db.isPresent());
+        assertTrue(user1Db.isPresent() && user2Db.isPresent());
         assertNotEquals(0, user1Db.get().getId().intValue());
         assertNotEquals(0, user2Db.get().getId().intValue());
         assertEquals(1, user1Db.get().getIbans().size());

@@ -15,9 +15,18 @@ public class UserServiceDb {
     private UserRepository userRepository;
 
     public User saveUser(final User user) {
-        log.info("User has been saved in database: " + user.getEmail());
-        return userRepository.save(user);
+            log.info("User has been saved in database: " + user.getEmail());
+            return userRepository.save(user);
     }
+
+    public User getUserEmail(final User user) {
+        return userRepository.findByEmail(user.getEmail()).orElseThrow(UserNotFoundException::new);
+    }
+
+    public boolean isPresent(final User user) {
+        return userRepository.findByEmail(user.getEmail()).isPresent();
+    }
+
     public void deleteUserById(final Long userId) {
         if (userRepository.findById(userId).isPresent()) {
             userRepository.deleteById(userId);
@@ -26,21 +35,22 @@ public class UserServiceDb {
             log.info("User is not present in database - id: " + userId);
         }
     }
+
     public User getUserById(final Long userId) {
         log.info("Getting user by id in progress... " + userId);
         return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
+
     public Set<User> getAllUsers() {
         log.info("Getting users in progress...");
         return userRepository.findAll();
     }
+
     public void deleteAllUsers() {
         userRepository.deleteAll();
     }
+
     public long countAll() {
         return userRepository.count();
-    }
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 }

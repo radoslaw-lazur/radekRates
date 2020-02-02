@@ -19,7 +19,7 @@ public class DataFixerController {
     private DataFixerClient dataFixerClient;
 
     @Autowired
-    private Base base;
+    private CurrrencyCalculator currrencyCalculator;
 
     @GetMapping(value = "getDataFixer")
     public DataFixerDto getDataFixerData() {
@@ -29,11 +29,11 @@ public class DataFixerController {
 
     @GetMapping(value = "getEurBase")
     public void getEurBase() {
-        EurBase eurBase = base.calculateEurBase();
-        PlnBase plnBase = base.calculatePlnBase();
-        GbpBase gbpBase = base.calculateGbpBase();
-        ChfBase chfBase = base.calculateChfBase();
-        UsdBase usdBase = base.calculateUsdBase();
+        EurBase eurBase = currrencyCalculator.calculateEurBase();
+        PlnBase plnBase = currrencyCalculator.calculatePlnBase();
+        GbpBase gbpBase = currrencyCalculator.calculateGbpBase();
+        ChfBase chfBase = currrencyCalculator.calculateChfBase();
+        UsdBase usdBase = currrencyCalculator.calculateUsdBase();
         System.out.println(eurBase.getDate());
         System.out.println(eurBase.getEur());
         System.out.println(eurBase.getPln());

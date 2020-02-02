@@ -3,9 +3,11 @@ package com.radekrates.controller.repository;
 import com.radekrates.domain.dto.TransactionDto;
 import com.radekrates.mapper.TransactionMapper;
 import com.radekrates.service.TransactionServiceDb;
+import com.radekrates.service.transactionfactory.TransactionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 @CrossOrigin(origins = "*")
@@ -17,10 +19,20 @@ public class TransactionController {
     @Autowired
     private TransactionServiceDb transactionServiceDb;
 
+
+    @Autowired
+    private TransactionFactory transactionFactory;
+
     @PostMapping(value = "saveTransaction")
     public void  saveTransaction(@RequestBody TransactionDto transactionDto) {
         transactionServiceDb.saveTransaction(transactionMapper.mapToTransaction(transactionDto));
     }
+
+    @GetMapping(value = "saveTransactionFromFactory")
+    public void saveTransactionFromFactory(@RequestParam String inputIban, @RequestParam String outputIban, @RequestParam String pair, @RequestParam BigDecimal value) {
+        transactionServiceDb.saveTransaction(transactionFactory.createTransaction(inputIban, outputIban, pair, value));
+    }
+
     @PutMapping(value = "updateTransaction")
     public TransactionDto updateTransaction(@RequestBody TransactionDto transactionDto) {
         return transactionMapper.mapToTransactionDto(transactionServiceDb.saveTransaction(transactionMapper.

@@ -19,53 +19,64 @@ public class Transaction {
     @Id
     @GeneratedValue
     @NotNull
-    @Column(name = "TRANSACTION_ID") 
+    @Column(name = "TRANSACTION_ID")
     private Long id;
     @NotNull
     @Column(name = "TRANSACTION_FROM")
-    private String from;
+    private String inputIbanNumber;
     @NotNull
     @Column(name = "TRANSACTION_TO")
-    private String to;
+    private String outputIbanNumber;
     @NotNull
     @Column(name = "TRANSACTION_PAIR_IO")
-    private String pairIO;
+    private String pairOfCurrencies;
     @NotNull
     @Column(name = "TRANSACTION_INPUT")
-    private BigDecimal input;
+    private BigDecimal inputValue;
     @NotNull
     @Column(name = "TRANSACTION_OUTPUT")
-    private BigDecimal output;
+    private BigDecimal outputValue;
+    @NotNull
+    @Column(name = "TRANSACTION_CURRENCY_PURCHASE")
+    private BigDecimal apiCurrencyPurchaseMultiplier;
+    @NotNull
+    @Column(name = "TRANSACTION_CURRENCY_SALE")
+    private BigDecimal currencySaleMultiplier;
+    @NotNull
+    @Column(name = "PROFIT")
+    private BigDecimal profit;
     @NotNull
     @Column(name = "TRANSACTION_DATE")
     private LocalDate date;
-    @NotNull
-    @Column(name = "TRANSACTION_SUCCESSFUL")
-    private boolean isSuccessful;
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    public Transaction(Long id, String from, String to, String pairIO, BigDecimal input, BigDecimal output,
-                       LocalDate date, boolean isSuccessful) {
+    public Transaction(Long id, String inputIbanNumber, String outputIbanNumber, String pairOfCurrencies,
+                       BigDecimal inputValue, BigDecimal outputValue, BigDecimal apiCurrencyPurchaseMultiplier,
+                       BigDecimal currencySaleMultiplier, BigDecimal profit, LocalDate date) {
         this.id = id;
-        this.from = from;
-        this.to = to;
-        this.pairIO = pairIO;
-        this.input = input;
-        this.output = output;
+        this.inputIbanNumber = inputIbanNumber;
+        this.outputIbanNumber = outputIbanNumber;
+        this.pairOfCurrencies = pairOfCurrencies;
+        this.inputValue = inputValue;
+        this.outputValue = outputValue;
+        this.apiCurrencyPurchaseMultiplier = apiCurrencyPurchaseMultiplier;
+        this.currencySaleMultiplier = currencySaleMultiplier;
+        this.profit = profit;
         this.date = date;
-
-        this.isSuccessful = isSuccessful;
     }
-    public Transaction(String from, String to, String pairIO, BigDecimal input, BigDecimal output, LocalDate date,
-                       boolean isSuccessful) {
-        this.from = from;
-        this.to = to;
-        this.pairIO = pairIO;
-        this.input = input;
-        this.output = output;
+    public Transaction(String inputIbanNumber, String outputIbanNumber, String pairOfCurrencies,
+                       BigDecimal inputValue, BigDecimal outputValue, BigDecimal apiCurrencyPurchaseMultiplier,
+                       BigDecimal currencySaleMultiplier, BigDecimal profit, LocalDate date) {
+        this.inputIbanNumber = inputIbanNumber;
+        this.outputIbanNumber = outputIbanNumber;
+        this.pairOfCurrencies = pairOfCurrencies;
+        this.inputValue = inputValue;
+        this.outputValue = outputValue;
+        this.apiCurrencyPurchaseMultiplier = apiCurrencyPurchaseMultiplier;
+        this.currencySaleMultiplier = currencySaleMultiplier;
+        this.profit = profit;
         this.date = date;
-        this.isSuccessful = isSuccessful;
     }
 }
