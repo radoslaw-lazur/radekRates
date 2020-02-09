@@ -1,7 +1,7 @@
 package com.radekrates.controller.datafixerapi;
 
 import com.radekrates.api.datafixerio.client.DataFixerClient;
-import com.radekrates.domain.datafixerio.dto.DataFixerDto;
+import com.radekrates.domain.dto.datafixerio.DataFixerDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;

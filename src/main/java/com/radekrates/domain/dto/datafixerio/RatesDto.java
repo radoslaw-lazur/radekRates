@@ -1,4 +1,4 @@
-package com.radekrates.domain.datafixerio.dto;
+package com.radekrates.domain.dto.datafixerio;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -1,8 +1,8 @@
 package com.radekrates.service.datafixerio.calculation;
 
 import com.radekrates.api.datafixerio.client.DataFixerClient;
-import com.radekrates.domain.datafixerio.dto.DataFixerDto;
-import com.radekrates.domain.datafixerio.dto.RatesDto;
+import com.radekrates.domain.dto.datafixerio.DataFixerDto;
+import com.radekrates.domain.dto.datafixerio.RatesDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
