@@ -20,6 +20,10 @@ public class TransactionServiceDb {
         return transactionRepository.save(transaction);
     }
 
+    public void saveTransactionToUser(final String userEmail) {
+
+    }
+
     public void deleteTransactionById(final Long transactionId) {
         if (transactionRepository.findById(transactionId).isPresent()) {
             transactionRepository.deleteById(transactionId);

@@ -1,4 +1,4 @@
-package com.radekrates.api.datafixerio.calculation;
+package com.radekrates.service.datafixerio.calculation;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

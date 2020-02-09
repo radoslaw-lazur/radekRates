@@ -26,6 +26,7 @@ public class TransactionRepositoryTestSuite {
     @Before
     public void createTransactions() {
         transaction1 = new Transaction(
+                "aaaa",
                 "inputIbanNumber",
                 "outputIbanNumber",
                 "PLN-EUR",
@@ -37,6 +38,7 @@ public class TransactionRepositoryTestSuite {
                 LocalDate.of(2020, 1, 1)
         );
         transaction2 = new Transaction(
+                "bbbb",
                 "inputIbanNumber",
                 "outputIbanNumber",
                 "PLN-EUR",

@@ -12,6 +12,7 @@ public class TransactionMapper {
     public Transaction mapToTransaction(final TransactionDto transactionDto) {
         return new Transaction(
                 transactionDto.getId(),
+                transactionDto.getUniqueStringChain(),
                 transactionDto.getInputIbanNumber(),
                 transactionDto.getOutputIbanNumber(),
                 transactionDto.getPairOfCurrencies(),
@@ -26,6 +27,7 @@ public class TransactionMapper {
     public TransactionDto mapToTransactionDto(final Transaction transaction) {
         return new TransactionDto(
                 transaction.getId(),
+                transaction.getUniqueStringChain(),
                 transaction.getInputIbanNumber(),
                 transaction.getOutputIbanNumber(),
                 transaction.getPairOfCurrencies(),
@@ -39,10 +41,9 @@ public class TransactionMapper {
     }
     public Set<TransactionDto> mapToTransactionDtoSet(final Set<Transaction> transactions) {
         return transactions.stream()
-                .map(t -> new TransactionDto(t.getId(), t.getInputIbanNumber(),t.getOutputIbanNumber(),
-                        t.getPairOfCurrencies(), t.getInputValue(), t.getOutputValue(),
-                        t.getApiCurrencyPurchaseMultiplier(), t.getCurrencySaleMultiplier(),
-                        t.getProfit(), t.getDate()))
+                .map(t -> new TransactionDto(t.getId(), t.getUniqueStringChain(), t.getInputIbanNumber(),
+                        t.getOutputIbanNumber(), t.getPairOfCurrencies(), t.getInputValue(), t.getOutputValue(),
+                        t.getApiCurrencyPurchaseMultiplier(), t.getCurrencySaleMultiplier(), t.getProfit(), t.getDate()))
                 .collect(Collectors.toSet());
     }
 }

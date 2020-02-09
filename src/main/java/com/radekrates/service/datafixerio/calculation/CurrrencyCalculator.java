@@ -1,20 +1,20 @@
-package com.radekrates.api.datafixerio.calculation;
+package com.radekrates.service.datafixerio.calculation;
 
 import com.radekrates.api.datafixerio.client.DataFixerClient;
 import com.radekrates.domain.datafixerio.dto.DataFixerDto;
 import com.radekrates.domain.datafixerio.dto.RatesDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
-@Component
+@Service
 public class CurrrencyCalculator {
     @Autowired
     private DataFixerClient dataFixerClient;
-    private static final MathContext mathContext = new MathContext(4, RoundingMode.CEILING);
+    private final MathContext mathContext = new MathContext(4, RoundingMode.CEILING);
 
     public CurrencyBase createLiveCurrencyBase(String currency) {
         DataFixerDto dataFixerDto = getDataFixerData();

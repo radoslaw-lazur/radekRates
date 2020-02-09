@@ -106,6 +106,7 @@ public class UserRepositoryTestSuite {
     public void testSaveTransactionToUser() {
         //Given
         Transaction transaction1 = new Transaction(
+                "aaaa",
                 "inputIbanNumber",
                 "outputIbanNumber",
                 "PLN-EUR",
@@ -117,6 +118,7 @@ public class UserRepositoryTestSuite {
                 LocalDate.of(2020, 1, 1)
         );
         Transaction transaction2 = new Transaction(
+                "bbbb",
                 "inputIbanNumber",
                 "outputIbanNumber",
                 "PLN-EUR",

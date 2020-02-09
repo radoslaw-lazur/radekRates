@@ -22,6 +22,9 @@ public class Transaction {
     @Column(name = "TRANSACTION_ID")
     private Long id;
     @NotNull
+    @Column
+    private String uniqueStringChain;
+    @NotNull
     @Column(name = "TRANSACTION_FROM")
     private String inputIbanNumber;
     @NotNull
@@ -52,10 +55,12 @@ public class Transaction {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    public Transaction(Long id, String inputIbanNumber, String outputIbanNumber, String pairOfCurrencies,
-                       BigDecimal inputValue, BigDecimal outputValue, BigDecimal apiCurrencyPurchaseMultiplier,
-                       BigDecimal currencySaleMultiplier, BigDecimal profit, LocalDate date) {
+    public Transaction(Long id, String uniqueStringChain, String inputIbanNumber, String outputIbanNumber,
+                       String pairOfCurrencies, BigDecimal inputValue, BigDecimal outputValue,
+                       BigDecimal apiCurrencyPurchaseMultiplier, BigDecimal currencySaleMultiplier,
+                       BigDecimal profit, LocalDate date) {
         this.id = id;
+        this.uniqueStringChain = uniqueStringChain;
         this.inputIbanNumber = inputIbanNumber;
         this.outputIbanNumber = outputIbanNumber;
         this.pairOfCurrencies = pairOfCurrencies;
@@ -66,9 +71,11 @@ public class Transaction {
         this.profit = profit;
         this.date = date;
     }
-    public Transaction(String inputIbanNumber, String outputIbanNumber, String pairOfCurrencies,
-                       BigDecimal inputValue, BigDecimal outputValue, BigDecimal apiCurrencyPurchaseMultiplier,
-                       BigDecimal currencySaleMultiplier, BigDecimal profit, LocalDate date) {
+    public Transaction(String uniqueStringChain, String inputIbanNumber, String outputIbanNumber,
+                       String pairOfCurrencies, BigDecimal inputValue, BigDecimal outputValue,
+                       BigDecimal apiCurrencyPurchaseMultiplier, BigDecimal currencySaleMultiplier,
+                       BigDecimal profit, LocalDate date) {
+        this.uniqueStringChain = uniqueStringChain;
         this.inputIbanNumber = inputIbanNumber;
         this.outputIbanNumber = outputIbanNumber;
         this.pairOfCurrencies = pairOfCurrencies;
