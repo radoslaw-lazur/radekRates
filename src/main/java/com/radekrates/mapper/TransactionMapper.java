@@ -1,7 +1,7 @@
 package com.radekrates.mapper;
 
 import com.radekrates.domain.Transaction;
-import com.radekrates.domain.dto.TransactionDto;
+import com.radekrates.domain.dto.transaction.TransactionDto;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;

@@ -1,7 +1,7 @@
 package com.radekrates.mapper;
 
 import com.radekrates.domain.Iban;
-import com.radekrates.domain.dto.IbanDto;
+import com.radekrates.domain.dto.iban.IbanDto;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;

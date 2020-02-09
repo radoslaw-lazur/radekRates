@@ -4,6 +4,10 @@ import com.radekrates.domain.Iban;
 import com.radekrates.domain.User;
 import com.radekrates.repository.IbanRepository;
 import com.radekrates.repository.UserRepository;
+import com.radekrates.service.exceptions.iban.IbanConflictException;
+import com.radekrates.service.exceptions.iban.IbanNotFoundException;
+import com.radekrates.service.exceptions.iban.IbanToUserConflictException;
+import com.radekrates.service.exceptions.user.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,8 +23,12 @@ public class IbanServiceDb {
     private UserRepository userRepository;
 
     public Iban saveIban(final Iban iban) {
-        log.info("Iban has been saved in database: " + iban.getIbanNumber());
-        return ibanRepository.save(iban);
+        if (ibanRepository.existsByIbanNumber(iban.getIbanNumber())) {
+            throw new IbanConflictException();
+        } else {
+            log.info("Iban has been saved in database: " + iban.getIbanNumber());
+            return ibanRepository.save(iban);
+        }
     }
 
     public void saveIbanToUser(final String userEmail, final String ibanNumber) {
@@ -31,6 +39,8 @@ public class IbanServiceDb {
             iban.setUser(user);
             userRepository.save(user);
             log.info("Iban " + ibanNumber + " has been linked to " + userEmail);
+        } else {
+            throw new IbanToUserConflictException();
         }
     }
 
@@ -40,6 +50,7 @@ public class IbanServiceDb {
             log.info("Iban has been deleted from database - id: " + ibanId);
         } else {
             log.info("Iban is not present in database - id: " + ibanId);
+            throw new IbanNotFoundException();
         }
     }
 

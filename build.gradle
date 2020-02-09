@@ -25,7 +25,6 @@ dependencies {
     compile('mysql:mysql-connector-java')
     //compile('org.postgresql:postgresql')
     compile('org.springframework.boot:spring-boot-starter-mail')
-    compile group: 'org.json', name: 'json', version: '20190722'
 }
 
 test {

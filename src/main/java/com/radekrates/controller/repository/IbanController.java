@@ -1,6 +1,7 @@
 package com.radekrates.controller.repository;
 
-import com.radekrates.domain.dto.IbanDto;
+import com.radekrates.domain.dto.iban.IbanDto;
+import com.radekrates.domain.dto.iban.IbanToUserDto;
 import com.radekrates.mapper.IbanMapper;
 import com.radekrates.service.IbanServiceDb;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class IbanController {
     }
 
     @GetMapping(value = "saveIbanToUser")
-    public void saveIbanToUser(@RequestParam String userEmail, @RequestParam String ibanNumber) {
-        ibanServiceDb.saveIbanToUser(userEmail, ibanNumber);
+    public void saveIbanToUser(@RequestBody IbanToUserDto ibanToUserDto) {
+        ibanServiceDb.saveIbanToUser(ibanToUserDto.getUserEmail(), ibanToUserDto.getIban());
     }
 
     @PutMapping(value = "updateIban")

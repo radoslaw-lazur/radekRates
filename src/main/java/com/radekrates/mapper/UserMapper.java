@@ -1,7 +1,7 @@
 package com.radekrates.mapper;
 
 import com.radekrates.domain.User;
-import com.radekrates.domain.dto.UserDto;
+import com.radekrates.domain.dto.user.UserDto;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;

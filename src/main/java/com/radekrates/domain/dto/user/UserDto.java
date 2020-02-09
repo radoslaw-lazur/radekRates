@@ -1,4 +1,4 @@
-package com.radekrates.domain.dto;
+package com.radekrates.domain.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

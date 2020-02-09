@@ -2,6 +2,8 @@ package com.radekrates.service;
 
 import com.radekrates.domain.User;
 import com.radekrates.repository.UserRepository;
+import com.radekrates.service.exceptions.user.UserConflictException;
+import com.radekrates.service.exceptions.user.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,12 @@ public class UserServiceDb {
     private UserRepository userRepository;
 
     public User saveUser(final User user) {
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new UserConflictException();
+        } else {
             log.info("User has been saved in database: " + user.getEmail());
             return userRepository.save(user);
+        }
     }
 
     public User getUserEmail(final User user) {
@@ -33,6 +39,7 @@ public class UserServiceDb {
             log.info("User has been deleted from database - id: " + userId);
         } else {
             log.info("User is not present in database - id: " + userId);
+            throw new UserNotFoundException();
         }
     }
 

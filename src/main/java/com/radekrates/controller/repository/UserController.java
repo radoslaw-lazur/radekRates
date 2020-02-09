@@ -1,14 +1,11 @@
 package com.radekrates.controller.repository;
 
-import com.radekrates.domain.dto.UserDto;
+import com.radekrates.domain.dto.user.UserDto;
 import com.radekrates.mapper.UserMapper;
 import com.radekrates.service.UserServiceDb;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
 
 @CrossOrigin(origins = "*")
@@ -21,13 +18,8 @@ public class UserController {
     private UserServiceDb userServiceDb;
 
     @PostMapping(value = "saveUser")
-    public int saveUser(@RequestBody UserDto userDto) {
-        if (userServiceDb.isPresent(userMapper.mapToUser(userDto))) {
-            return HttpServletResponse.SC_CONFLICT;
-        } else {
-            userServiceDb.saveUser(userMapper.mapToUser(userDto));
-            return HttpServletResponse.SC_CREATED;
-        }
+    public void saveUser(@RequestBody UserDto userDto) {
+        userServiceDb.saveUser(userMapper.mapToUser(userDto));
     }
 
     @PutMapping(value = "updateUser")

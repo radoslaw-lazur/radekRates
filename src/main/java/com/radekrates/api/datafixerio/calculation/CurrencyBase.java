@@ -10,8 +10,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ChfBase {
-    private String base;
+public class CurrencyBase {
+    private String currencyBase;
     private LocalDate date;
     private BigDecimal eur;
     private BigDecimal pln;

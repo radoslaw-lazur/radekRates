@@ -2,6 +2,7 @@ package com.radekrates.service;
 
 import com.radekrates.domain.Transaction;
 import com.radekrates.repository.TransactionRepository;
+import com.radekrates.service.exceptions.transaction.TransactionNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
