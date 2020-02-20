@@ -21,4 +21,6 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
     void deleteAll();
     @Override
     long count();
+
+    Optional<Transaction> findByUniqueStringChain(String uniquestringchain);
 }

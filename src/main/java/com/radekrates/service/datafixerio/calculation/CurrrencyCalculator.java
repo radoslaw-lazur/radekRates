@@ -14,7 +14,8 @@ import java.math.RoundingMode;
 public class CurrrencyCalculator {
     @Autowired
     private DataFixerClient dataFixerClient;
-    private final MathContext mathContext = new MathContext(4, RoundingMode.CEILING);
+    private final static MathContext MATH_CONTEXT = new MathContext(4, RoundingMode.CEILING);
+    private final static int SCALE = 4;
 
     public CurrencyBase createLiveCurrencyBase(String currency) {
         DataFixerDto dataFixerDto = getDataFixerData();
@@ -25,53 +26,53 @@ public class CurrrencyCalculator {
                         dataFixerDto.getCurrencyBased(),
                         dataFixerDto.getDate(),
                         ratesDto.getEur(),
-                        ratesDto.getPln().round(mathContext),
-                        ratesDto.getGbp().round(mathContext),
-                        ratesDto.getChf().round(mathContext),
-                        ratesDto.getUsd().round(mathContext)
+                        ratesDto.getPln().round(MATH_CONTEXT),
+                        ratesDto.getGbp().round(MATH_CONTEXT),
+                        ratesDto.getChf().round(MATH_CONTEXT),
+                        ratesDto.getUsd().round(MATH_CONTEXT)
                 );
             case "PLN":
-                BigDecimal eurToPln = BigDecimal.ONE.divide(ratesDto.getPln(), 4, RoundingMode.CEILING);
+                BigDecimal eurToPln = BigDecimal.ONE.divide(ratesDto.getPln(), SCALE, RoundingMode.CEILING);
                 return new CurrencyBase(
                         "PLN",
                         dataFixerDto.getDate(),
                         eurToPln,
                         BigDecimal.ONE,
-                        eurToPln.multiply(ratesDto.getGbp()).round(mathContext),
-                        eurToPln.multiply(ratesDto.getChf()).round(mathContext),
-                        eurToPln.multiply(ratesDto.getUsd()).round(mathContext)
+                        eurToPln.multiply(ratesDto.getGbp()).round(MATH_CONTEXT),
+                        eurToPln.multiply(ratesDto.getChf()).round(MATH_CONTEXT),
+                        eurToPln.multiply(ratesDto.getUsd()).round(MATH_CONTEXT)
                 );
             case "GBP":
-                BigDecimal eurToGbp = BigDecimal.ONE.divide(ratesDto.getGbp(), 4, RoundingMode.CEILING);
+                BigDecimal eurToGbp = BigDecimal.ONE.divide(ratesDto.getGbp(), SCALE, RoundingMode.CEILING);
                 return new CurrencyBase(
                         "GBP",
                         dataFixerDto.getDate(),
                         eurToGbp,
-                        eurToGbp.multiply(ratesDto.getPln()).round(mathContext),
+                        eurToGbp.multiply(ratesDto.getPln()).round(MATH_CONTEXT),
                         BigDecimal.ONE,
-                        eurToGbp.multiply(ratesDto.getChf()).round(mathContext),
-                        eurToGbp.multiply(ratesDto.getUsd()).round(mathContext)
+                        eurToGbp.multiply(ratesDto.getChf()).round(MATH_CONTEXT),
+                        eurToGbp.multiply(ratesDto.getUsd()).round(MATH_CONTEXT)
                 );
             case "CHF":
-                BigDecimal eurToChf = BigDecimal.ONE.divide(ratesDto.getChf(), 4, RoundingMode.CEILING);
+                BigDecimal eurToChf = BigDecimal.ONE.divide(ratesDto.getChf(), SCALE, RoundingMode.CEILING);
                 return new CurrencyBase(
                         "CHF",
                         dataFixerDto.getDate(),
                         eurToChf,
-                        eurToChf.multiply(ratesDto.getPln()).round(mathContext),
-                        eurToChf.multiply(ratesDto.getGbp()).round(mathContext),
+                        eurToChf.multiply(ratesDto.getPln()).round(MATH_CONTEXT),
+                        eurToChf.multiply(ratesDto.getGbp()).round(MATH_CONTEXT),
                         BigDecimal.ONE,
-                        eurToChf.multiply(ratesDto.getUsd()).round(mathContext)
+                        eurToChf.multiply(ratesDto.getUsd()).round(MATH_CONTEXT)
                 );
             case "USD":
-                BigDecimal eurToUsd = BigDecimal.ONE.divide(ratesDto.getUsd(), 4, RoundingMode.CEILING);
+                BigDecimal eurToUsd = BigDecimal.ONE.divide(ratesDto.getUsd(), SCALE, RoundingMode.CEILING);
                 return new CurrencyBase(
                         "USD",
                         dataFixerDto.getDate(),
                         eurToUsd,
-                        eurToUsd.multiply(ratesDto.getPln()).round(mathContext),
-                        eurToUsd.multiply(ratesDto.getGbp()).round(new MathContext(4, RoundingMode.CEILING)),
-                        eurToUsd.multiply(ratesDto.getChf()).round(mathContext),
+                        eurToUsd.multiply(ratesDto.getPln()).round(MATH_CONTEXT),
+                        eurToUsd.multiply(ratesDto.getGbp()).round(MATH_CONTEXT),
+                        eurToUsd.multiply(ratesDto.getChf()).round(MATH_CONTEXT),
                         BigDecimal.ONE
                 );
             default:

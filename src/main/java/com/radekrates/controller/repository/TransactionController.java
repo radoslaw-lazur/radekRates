@@ -27,9 +27,9 @@ public class TransactionController {
     }
 
     @GetMapping(value = "saveTransactionFromFactory")
-    public void saveTransactionFromFactory(@RequestBody TransactionToProcessDto transaction) {
-        transactionServiceDb.saveTransaction(transactionFactory.createTransaction(transaction.getInputIbanNumber(),
-                transaction.getOutputIbanNumber(), transaction.getCurrencyPair(), transaction.getInputValue()));
+    public void saveTransactionFromFactory(@RequestBody TransactionToProcessDto transactionToProcessDto) {
+        transactionServiceDb.saveTransaction(transactionFactory.createTransaction(transactionToProcessDto));
+        transactionServiceDb.saveTransactionToUser(transactionToProcessDto);
     }
 
     @PutMapping(value = "updateTransaction")
