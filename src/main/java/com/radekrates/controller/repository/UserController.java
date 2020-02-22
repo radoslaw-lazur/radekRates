@@ -12,10 +12,14 @@ import java.util.Set;
 @RestController
 @RequestMapping("/v1/user")
 public class UserController {
-    @Autowired
     private UserMapper userMapper;
-    @Autowired
     private UserServiceDb userServiceDb;
+
+    @Autowired
+    public UserController(UserMapper userMapper, UserServiceDb userServiceDb) {
+        this.userMapper = userMapper;
+        this.userServiceDb = userServiceDb;
+    }
 
     @PostMapping(value = "saveUser")
     public void saveUser(@RequestBody UserDto userDto) {

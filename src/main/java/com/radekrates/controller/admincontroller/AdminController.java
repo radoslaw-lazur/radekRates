@@ -13,8 +13,12 @@ import java.math.BigDecimal;
 @RestController
 @RequestMapping("/v1/admin")
 public class AdminController {
-    @Autowired
     private TransactionFactory transactionFactory;
+
+    @Autowired
+    public AdminController(TransactionFactory transactionFactory) {
+        this.transactionFactory = transactionFactory;
+    }
 
     @GetMapping(value = "setRatioInDecimal")
     @ResponseStatus(value = HttpStatus.OK, reason = "Server acceptance")

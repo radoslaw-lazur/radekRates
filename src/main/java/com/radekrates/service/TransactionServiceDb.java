@@ -19,11 +19,15 @@ import java.util.Set;
 @Setter
 @Service
 public class TransactionServiceDb {
-    @Autowired
     private TransactionRepository transactionRepository;
-    @Autowired
     private UserRepository userRepository;
     private String temporaryUniqueStringChain = "";
+
+    @Autowired
+    public TransactionServiceDb(TransactionRepository transactionRepository, UserRepository userRepository) {
+        this.transactionRepository = transactionRepository;
+        this.userRepository = userRepository;
+    }
 
     public Transaction saveTransaction(final Transaction transaction) {
         log.info("Transaction has been saved in database: " + transaction.getDate());
@@ -33,9 +37,9 @@ public class TransactionServiceDb {
     public void saveTransactionToUser(final TransactionToProcessDto transactionToProcessDto) {
         User user = userRepository.findByEmail(transactionToProcessDto.getUserEmail())
                 .orElseThrow(UserNotFoundException::new);
-        Transaction transaction = transactionRepository.findByUniqueStringChain(temporaryUniqueStringChain)
+        Transaction transaction = transactionRepository.findByUniqueKeyChain(temporaryUniqueStringChain)
                 .orElseThrow(TransactionNotFoundException::new);
-        if (transaction.getUniqueStringChain().equals(temporaryUniqueStringChain)) {
+        if (transaction.getUniqueKeyChain().equals(temporaryUniqueStringChain)) {
             user.getTransactions().add(transaction);
             transaction.setUser(user);
             userRepository.save(user);

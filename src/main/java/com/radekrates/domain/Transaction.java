@@ -22,8 +22,11 @@ public class Transaction {
     @Column(name = "TRANSACTION_ID")
     private Long id;
     @NotNull
-    @Column
-    private String uniqueStringChain;
+    @Column(name = "TRANSACTION_KEY_CHAIN")
+    private String uniqueKeyChain;
+    @NotNull
+    @Column(name = "TRANSACTION_USER_EMAIL")
+    private String userEmail;
     @NotNull
     @Column(name = "TRANSACTION_FROM")
     private String inputIbanNumber;
@@ -55,12 +58,13 @@ public class Transaction {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    public Transaction(Long id, String uniqueStringChain, String inputIbanNumber, String outputIbanNumber,
-                       String pairOfCurrencies, BigDecimal inputValue, BigDecimal outputValue,
+    public Transaction(Long id, String uniqueKeyChain, String userEmail, String inputIbanNumber,
+                       String outputIbanNumber, String pairOfCurrencies, BigDecimal inputValue, BigDecimal outputValue,
                        BigDecimal apiCurrencyPurchaseMultiplier, BigDecimal currencySaleMultiplier,
                        BigDecimal profit, LocalDate date) {
         this.id = id;
-        this.uniqueStringChain = uniqueStringChain;
+        this.uniqueKeyChain = uniqueKeyChain;
+        this.userEmail = userEmail;
         this.inputIbanNumber = inputIbanNumber;
         this.outputIbanNumber = outputIbanNumber;
         this.pairOfCurrencies = pairOfCurrencies;
@@ -71,11 +75,12 @@ public class Transaction {
         this.profit = profit;
         this.date = date;
     }
-    public Transaction(String uniqueStringChain, String inputIbanNumber, String outputIbanNumber,
+    public Transaction(String uniqueKeyChain, String userEmail, String inputIbanNumber, String outputIbanNumber,
                        String pairOfCurrencies, BigDecimal inputValue, BigDecimal outputValue,
                        BigDecimal apiCurrencyPurchaseMultiplier, BigDecimal currencySaleMultiplier,
                        BigDecimal profit, LocalDate date) {
-        this.uniqueStringChain = uniqueStringChain;
+        this.uniqueKeyChain = uniqueKeyChain;
+        this.userEmail = userEmail;
         this.inputIbanNumber = inputIbanNumber;
         this.outputIbanNumber = outputIbanNumber;
         this.pairOfCurrencies = pairOfCurrencies;

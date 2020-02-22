@@ -13,10 +13,14 @@ import java.util.Set;
 @RestController
 @RequestMapping("/v1/iban")
 public class IbanController {
-    @Autowired
     private IbanMapper ibanMapper;
-    @Autowired
     private IbanServiceDb ibanServiceDb;
+
+    @Autowired
+    public IbanController(IbanMapper ibanMapper, IbanServiceDb ibanServiceDb) {
+        this.ibanMapper = ibanMapper;
+        this.ibanServiceDb = ibanServiceDb;
+    }
 
     @PostMapping(value = "saveIban")
     public void saveIban(@RequestBody IbanDto ibanDto) {

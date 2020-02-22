@@ -22,5 +22,5 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
     @Override
     long count();
 
-    Optional<Transaction> findByUniqueStringChain(String uniquestringchain);
+    Optional<Transaction> findByUniqueKeyChain(String uniqueKeyChain);
 }

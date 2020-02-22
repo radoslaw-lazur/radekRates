@@ -24,16 +24,21 @@ import java.util.Random;
 @Setter
 @Service
 public class TransactionFactory {
-    @Autowired
     private IbanRepository ibanRepository;
-    @Autowired
     private TransactionServiceDb transactionServiceDb;
-    @Autowired
     private CurrrencyCalculator currrencyCalculator;
     private CurrencyBase currencyBase;
     private String uniqueStringChain;
-    private BigDecimal ratio = new BigDecimal("1.1");
+    private BigDecimal ratio = new BigDecimal("1.02");
     private final static MathContext MATH_CONTEXT = new MathContext(4, RoundingMode.CEILING);
+
+    @Autowired
+    public TransactionFactory(IbanRepository ibanRepository, TransactionServiceDb transactionServiceDb,
+                              CurrrencyCalculator currrencyCalculator) {
+        this.ibanRepository = ibanRepository;
+        this.transactionServiceDb = transactionServiceDb;
+        this.currrencyCalculator = currrencyCalculator;
+    }
 
     public Transaction createTransaction(TransactionToProcessDto transactionProccesDto) {
         log.info("Creating transaction in progress... " + transactionProccesDto.getCurrencyPair());
@@ -51,6 +56,7 @@ public class TransactionFactory {
 
         return new Transaction(
                 uniqueStringChain,
+                transactionProccesDto.getUserEmail(),
                 inputIbanDb.getIbanNumber(),
                 outputIbanDb.getIbanNumber(),
                 transactionProccesDto.getCurrencyPair(),

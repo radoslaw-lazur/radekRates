@@ -16,10 +16,14 @@ import static java.util.Optional.ofNullable;
 @Component
 @Slf4j
 public class DataFixerClient {
-    @Autowired
     private RestTemplate restTemplate;
-    @Autowired
     private DataFixerConfig dataFixerConfig;
+
+    @Autowired
+    public DataFixerClient(RestTemplate restTemplate, DataFixerConfig dataFixerConfig) {
+        this.restTemplate = restTemplate;
+        this.dataFixerConfig = dataFixerConfig;
+    }
 
     public DataFixerDto getDataFixerData() {
         try {

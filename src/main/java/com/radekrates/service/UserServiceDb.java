@@ -13,8 +13,12 @@ import java.util.Set;
 @Slf4j
 @Service
 public class UserServiceDb {
-    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    public UserServiceDb(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public User saveUser(final User user) {
         if (userRepository.existsByEmail(user.getEmail())) {

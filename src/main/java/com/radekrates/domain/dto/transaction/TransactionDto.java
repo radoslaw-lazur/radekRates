@@ -10,7 +10,8 @@ import java.time.LocalDate;
 @Getter
 public class TransactionDto {
     private Long id;
-    private String uniqueStringChain;
+    private String uniqueKeyChain;
+    private String userEmail;
     private String inputIbanNumber;
     private String outputIbanNumber;
     private String pairOfCurrencies;

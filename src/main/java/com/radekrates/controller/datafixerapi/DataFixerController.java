@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/v1/dataFixer")
 public class DataFixerController {
-    @Autowired
     private DataFixerClient dataFixerClient;
+
+    @Autowired
+    public DataFixerController(DataFixerClient dataFixerClient) {
+        this.dataFixerClient = dataFixerClient;
+    }
 
     @GetMapping(value = "getDataFixer")
     public DataFixerDto getDataFixerData() {

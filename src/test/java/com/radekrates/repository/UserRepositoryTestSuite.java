@@ -107,6 +107,7 @@ public class UserRepositoryTestSuite {
         //Given
         Transaction transaction1 = new Transaction(
                 "aaaa",
+                "radoslaw.lazur@gmail.com",
                 "inputIbanNumber",
                 "outputIbanNumber",
                 "PLN-EUR",
@@ -119,6 +120,7 @@ public class UserRepositoryTestSuite {
         );
         Transaction transaction2 = new Transaction(
                 "bbbb",
+                "radoslaw.lazur@gmail.com",
                 "inputIbanNumber",
                 "outputIbanNumber",
                 "PLN-EUR",

@@ -12,10 +12,14 @@ import java.math.RoundingMode;
 
 @Service
 public class CurrrencyCalculator {
-    @Autowired
     private DataFixerClient dataFixerClient;
     private final static MathContext MATH_CONTEXT = new MathContext(4, RoundingMode.CEILING);
     private final static int SCALE = 4;
+
+    @Autowired
+    public CurrrencyCalculator(DataFixerClient dataFixerClient) {
+        this.dataFixerClient = dataFixerClient;
+    }
 
     public CurrencyBase createLiveCurrencyBase(String currency) {
         DataFixerDto dataFixerDto = getDataFixerData();

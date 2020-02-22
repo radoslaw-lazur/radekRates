@@ -27,6 +27,7 @@ public class TransactionRepositoryTestSuite {
     public void createTransactions() {
         transaction1 = new Transaction(
                 "aaaa",
+                "radoslaw.lazur@gmail.com",
                 "inputIbanNumber",
                 "outputIbanNumber",
                 "PLN-EUR",
@@ -39,6 +40,7 @@ public class TransactionRepositoryTestSuite {
         );
         transaction2 = new Transaction(
                 "bbbb",
+                "radoslaw.lazur@gmail.com",
                 "inputIbanNumber",
                 "outputIbanNumber",
                 "PLN-EUR",

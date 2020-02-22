@@ -17,10 +17,14 @@ import java.util.Set;
 @Slf4j
 @Service
 public class IbanServiceDb {
-    @Autowired
     private IbanRepository ibanRepository;
-    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    public IbanServiceDb(IbanRepository ibanRepository, UserRepository userRepository) {
+        this.ibanRepository = ibanRepository;
+        this.userRepository = userRepository;
+    }
 
     public Iban saveIban(final Iban iban) {
         if (ibanRepository.existsByIbanNumber(iban.getIbanNumber())) {

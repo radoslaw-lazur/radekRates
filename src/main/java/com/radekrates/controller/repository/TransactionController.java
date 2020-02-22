@@ -14,12 +14,17 @@ import java.util.Set;
 @RestController
 @RequestMapping("/v1/transaction")
 public class TransactionController {
-    @Autowired
     private TransactionMapper transactionMapper;
-    @Autowired
     private TransactionServiceDb transactionServiceDb;
-    @Autowired
     private TransactionFactory transactionFactory;
+
+    @Autowired
+    public TransactionController(TransactionMapper transactionMapper, TransactionServiceDb transactionServiceDb,
+        TransactionFactory transactionFactory) {
+        this.transactionMapper = transactionMapper;
+        this.transactionServiceDb = transactionServiceDb;
+        this.transactionFactory = transactionFactory;
+    }
 
     @PostMapping(value = "saveTransaction")
     public void  saveTransaction(@RequestBody TransactionDto transactionDto) {
