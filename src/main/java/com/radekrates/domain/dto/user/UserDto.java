@@ -13,6 +13,7 @@ public class UserDto {
     private String userLastName;
     private int age;
     private String country;
+    private String activationCode;
     private boolean isActive;
     private boolean isBlocked;
 }

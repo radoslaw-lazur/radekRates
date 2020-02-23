@@ -2,6 +2,7 @@ package com.radekrates.controller.repository;
 
 import com.radekrates.domain.dto.iban.IbanDto;
 import com.radekrates.domain.dto.iban.IbanToUserDto;
+import com.radekrates.domain.dto.user.UserEmailDto;
 import com.radekrates.mapper.IbanMapper;
 import com.radekrates.service.IbanServiceDb;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class IbanController {
 
     @GetMapping(value = "saveIbanToUser")
     public void saveIbanToUser(@RequestBody IbanToUserDto ibanToUserDto) {
-        ibanServiceDb.saveIbanToUser(ibanToUserDto.getUserEmail(), ibanToUserDto.getIban());
+        ibanServiceDb.saveIbanToUser(ibanToUserDto);
     }
 
     @PutMapping(value = "updateIban")
@@ -53,8 +54,8 @@ public class IbanController {
     }
 
     @GetMapping(value = "getIbansRelatedToUser")
-    public Set<IbanDto> getIbansRelatedToUser(@RequestParam String userEmail) {
-        return ibanMapper.mapToIbanDtoSet(ibanServiceDb.getIbansRelatedToUser(userEmail));
+    public Set<IbanDto> getIbansRelatedToUser(@RequestBody UserEmailDto userEmailDto) {
+        return ibanMapper.mapToIbanDtoSet(ibanServiceDb.getIbansRelatedToUser(userEmailDto));
     }
 
     @DeleteMapping(value = "deleteAllIbans")

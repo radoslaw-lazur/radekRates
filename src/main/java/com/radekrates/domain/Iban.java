@@ -26,21 +26,26 @@ public class Iban {
     @Column(name = "IBAN_BANKLOCALISATION")
     private String bankLocalisation;
     @NotNull
+    @Column(name = "IBAN_COUNTRYCODE")
+    private String countryCode;
+    @NotNull
     @Column(name = "IBAN_IBANNUMBER")
     private String ibanNumber;
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    public Iban(Long id, String bankName, String bankLocalisation, String ibanNumber) {
+    public Iban(Long id, String bankName, String bankLocalisation, String countryCode, String ibanNumber) {
         this.id = id;
         this.bankName = bankName;
         this.bankLocalisation = bankLocalisation;
+        this.countryCode = countryCode;
         this.ibanNumber = ibanNumber;
     }
-    public Iban(String bankName, String bankLocalisation, String ibanNumber) {
+    public Iban(String bankName, String bankLocalisation, String countryCode, String ibanNumber) {
         this.bankName = bankName;
         this.bankLocalisation = bankLocalisation;
+        this.countryCode = countryCode;
         this.ibanNumber = ibanNumber;
     }
 }

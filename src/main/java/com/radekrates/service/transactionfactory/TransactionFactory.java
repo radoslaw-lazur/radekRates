@@ -8,6 +8,7 @@ import com.radekrates.domain.Iban;
 import com.radekrates.domain.Transaction;
 import com.radekrates.repository.IbanRepository;
 import com.radekrates.service.exceptions.iban.IbanNotFoundException;
+import com.radekrates.service.generators.UniqueStringChainGenerator;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.util.Random;
 
 @Slf4j
 @Getter
@@ -27,6 +27,7 @@ public class TransactionFactory {
     private IbanRepository ibanRepository;
     private TransactionServiceDb transactionServiceDb;
     private CurrrencyCalculator currrencyCalculator;
+    private UniqueStringChainGenerator generator;
     private CurrencyBase currencyBase;
     private String uniqueStringChain;
     private BigDecimal ratio = new BigDecimal("1.02");
@@ -34,10 +35,11 @@ public class TransactionFactory {
 
     @Autowired
     public TransactionFactory(IbanRepository ibanRepository, TransactionServiceDb transactionServiceDb,
-                              CurrrencyCalculator currrencyCalculator) {
+                              CurrrencyCalculator currrencyCalculator, UniqueStringChainGenerator generator) {
         this.ibanRepository = ibanRepository;
         this.transactionServiceDb = transactionServiceDb;
         this.currrencyCalculator = currrencyCalculator;
+        this.generator = generator;
     }
 
     public Transaction createTransaction(TransactionToProcessDto transactionProccesDto) {
@@ -51,7 +53,7 @@ public class TransactionFactory {
         BigDecimal purchasedCurrency = recognizeSaleCurrency(transactionProccesDto.getCurrencyPair().substring(4, 7));
         BigDecimal soldCurrency = purchasedCurrency.multiply(ratio).round(MATH_CONTEXT);
         BigDecimal profit = soldCurrency.subtract(purchasedCurrency);
-        uniqueStringChain = createUniqueStringChain();
+        uniqueStringChain = generator.createUniqueStringChain();
         transactionServiceDb.setTemporaryUniqueStringChain(uniqueStringChain);
 
         return new Transaction(
@@ -67,16 +69,6 @@ public class TransactionFactory {
                 profit.multiply(transactionProccesDto.getInputValue()).round(MATH_CONTEXT),
                 currencyBase.getDate()
         );
-    }
-
-    private String createUniqueStringChain() {
-        int leftLimit = 97;
-        int rightLimit = 122;
-        int targetStringLength = 20;
-        return new Random().ints(leftLimit, rightLimit + 1)
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
     }
 
     private BigDecimal recognizeSaleCurrency(String saleCurrency) {

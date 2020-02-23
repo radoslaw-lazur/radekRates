@@ -18,6 +18,7 @@ public class UserMapper {
                 userDto.getUserLastName(),
                 userDto.getAge(),
                 userDto.getCountry(),
+                userDto.getActivationCode(),
                 userDto.isActive(),
                 userDto.isBlocked()
         );
@@ -31,6 +32,7 @@ public class UserMapper {
                 user.getUserLastName(),
                 user.getAge(),
                 user.getCountry(),
+                user.getActivationCode(),
                 user.isActive(),
                 user.isBlocked()
         );
@@ -38,7 +40,8 @@ public class UserMapper {
     public Set<UserDto> mapToUserDtoSet(final Set<User> users) {
         return users.stream()
                 .map(u -> new UserDto(u.getId(), u.getEmail(), u.getPassword(), u.getUserFirstName(),
-                        u.getUserLastName(), u.getAge(), u.getCountry(), u.isActive(), u.isBlocked()))
+                        u.getUserLastName(), u.getAge(), u.getCountry(), u.getActivationCode(),
+                        u.isActive(), u.isBlocked()))
                 .collect(Collectors.toSet());
     }
 }

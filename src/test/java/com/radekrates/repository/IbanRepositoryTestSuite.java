@@ -27,12 +27,14 @@ public class IbanRepositoryTestSuite {
         iban1 = new Iban(
                 "bankName",
                 "bankLocalisation",
-                "111"
+                "PL",
+                "111111111111111111111111111111"
         );
         iban2 = new Iban(
                 "bankName",
                 "bankLocalisation",
-                "222"
+                "DE",
+                "222222222222222222222222222222"
         );
     }
 
@@ -50,7 +52,8 @@ public class IbanRepositoryTestSuite {
     @Test
     public void testIbanSize() {
         //Given
-        ibanRepository.save(iban1); ibanRepository.save(iban2);
+        ibanRepository.save(iban1);
+        ibanRepository.save(iban2);
         //When
         Set<Iban> ibans = ibanRepository.findAll();
         long counts = ibanRepository.count();
@@ -62,7 +65,8 @@ public class IbanRepositoryTestSuite {
     @Test
     public void testFindIbanById() {
         //Given
-        ibanRepository.save(iban1); ibanRepository.save(iban2);
+        ibanRepository.save(iban1);
+        ibanRepository.save(iban2);
         Long iban1Id = iban1.getId();
         Long iban2Id = iban2.getId();
         //When
@@ -77,7 +81,8 @@ public class IbanRepositoryTestSuite {
     @Test
     public void testDeleteIbanById() {
         //Given
-        ibanRepository.save(iban1); ibanRepository.save(iban2);
+        ibanRepository.save(iban1);
+        ibanRepository.save(iban2);
         Long iban1Id = iban1.getId();
         Long iban2Id = iban2.getId();
         //When
@@ -93,11 +98,12 @@ public class IbanRepositoryTestSuite {
     @Test
     public void testFindIbanByIbanNumber() {
         //Given
-        ibanRepository.save(iban1); ibanRepository.save(iban2);
+        ibanRepository.save(iban1);
+        ibanRepository.save(iban2);
         Long iban1Id = iban1.getId();
         Long iban2Id = iban2.getId();
         //When
-        Optional<Iban> ibanFromDb = ibanRepository.findByIbanNumber("111");
+        Optional<Iban> ibanFromDb = ibanRepository.findByIbanNumber("111111111111111111111111111111");
         //Then
         assertTrue(ibanFromDb.isPresent());
         assertEquals(iban1.getIbanNumber(), ibanFromDb.get().getIbanNumber());

@@ -1,9 +1,15 @@
 package com.radekrates.service;
 
+import com.radekrates.domain.Mail;
 import com.radekrates.domain.User;
+import com.radekrates.domain.dto.user.UserActivationDto;
+import com.radekrates.domain.dto.user.UserEmailDto;
 import com.radekrates.repository.UserRepository;
 import com.radekrates.service.exceptions.user.UserConflictException;
+import com.radekrates.service.exceptions.user.UserDataConflictException;
 import com.radekrates.service.exceptions.user.UserNotFoundException;
+import com.radekrates.service.generators.UniqueStringChainGenerator;
+import com.radekrates.service.mail.EmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,27 +20,58 @@ import java.util.Set;
 @Service
 public class UserServiceDb {
     private UserRepository userRepository;
+    private EmailService emailService;
+    private UniqueStringChainGenerator generator;
 
     @Autowired
-    public UserServiceDb(UserRepository userRepository) {
+    public UserServiceDb(UserRepository userRepository, EmailService emailService, UniqueStringChainGenerator generator) {
         this.userRepository = userRepository;
+        this.emailService = emailService;
+        this.generator = generator;
     }
 
     public User saveUser(final User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new UserConflictException();
         } else {
+            String activationCode = generator.createUniqueStringChain();
+            user.setActivationCode(activationCode);
             log.info("User has been saved in database: " + user.getEmail());
+            emailService.send(new Mail(user.getEmail(), "Dear " + user.getUserFirstName() +
+                    ", here is your activation code", activationCode));
             return userRepository.save(user);
         }
     }
 
-    public User getUserEmail(final User user) {
-        return userRepository.findByEmail(user.getEmail()).orElseThrow(UserNotFoundException::new);
+    public void activateUser(final UserActivationDto userActivationDto) {
+        User user = userRepository.findByEmail(userActivationDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
+        if (user.getActivationCode().equals(userActivationDto.getActivationCodeFront()) && !user.isActive()) {
+            user.setActive(true);
+            userRepository.save(user);
+            log.info(user.getEmail() + " has been activated");
+        } else {
+            throw new UserDataConflictException();
+        }
     }
 
-    public boolean isPresent(final User user) {
-        return userRepository.findByEmail(user.getEmail()).isPresent();
+    public void blockUser(final UserEmailDto userEmailDto) {
+        User user = userRepository.findByEmail(userEmailDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
+        if (user.isActive() && !user.isBlocked() && user.getEmail().equals(userEmailDto.getUserEmail())) {
+            user.setBlocked(true);
+            log.info(user.getEmail() + " has been blocked");
+        } else {
+            throw new UserDataConflictException();
+        }
+    }
+
+    public void unblockUser(final UserEmailDto userEmailDto) {
+        User user = userRepository.findByEmail(userEmailDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
+        if (user.isActive() && user.isBlocked() && user.getEmail().equals(userEmailDto.getUserEmail())) {
+            user.setBlocked(false);
+            log.info(user.getEmail() + " has been unblocked");
+        } else {
+            throw new UserDataConflictException();
+        }
     }
 
     public void deleteUserById(final Long userId) {

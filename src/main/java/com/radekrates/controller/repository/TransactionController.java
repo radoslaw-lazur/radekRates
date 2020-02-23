@@ -2,6 +2,7 @@ package com.radekrates.controller.repository;
 
 import com.radekrates.domain.dto.transaction.TransactionDto;
 import com.radekrates.domain.dto.transaction.TransactionToProcessDto;
+import com.radekrates.domain.dto.user.UserEmailDto;
 import com.radekrates.mapper.TransactionMapper;
 import com.radekrates.service.TransactionServiceDb;
 import com.radekrates.service.transactionfactory.TransactionFactory;
@@ -56,6 +57,11 @@ public class TransactionController {
     @GetMapping(value = "getTransactions")
     public Set<TransactionDto> getTransactions() {
         return transactionMapper.mapToTransactionDtoSet(transactionServiceDb.getAllTransactions());
+    }
+
+    @GetMapping(value = "getTransactionsRelatedToUser")
+    public Set<TransactionDto> getTransactionsRelatedToUser(@RequestBody UserEmailDto userEmailDto) {
+        return transactionMapper.mapToTransactionDtoSet(transactionServiceDb.getTransactionsRelatedToUser(userEmailDto));
     }
 
     @DeleteMapping(value = "deleteAllTransactions")

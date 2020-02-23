@@ -35,6 +35,7 @@ public class UserRepositoryTestSuite {
                 "Lazur",
                 30,
                 "Poland",
+                "abc",
                 false,
                 false
         );
@@ -45,6 +46,7 @@ public class UserRepositoryTestSuite {
                 "Lazur",
                 30,
                 "Poland",
+                "abc",
                 false,
                 false
         );
@@ -156,12 +158,14 @@ public class UserRepositoryTestSuite {
         Iban iban1 = new Iban(
                 "bankName",
                 "bankLocalisation",
-                "111"
+                "PL",
+                "111111111111111111111111111111"
         );
         Iban iban2 = new Iban(
                 "bankName",
                 "bankLocalisation",
-                "222"
+                "DE",
+                "222222222222222222222222222222"
         );
         user1.getIbans().add(iban1);
         user2.getIbans().add(iban2);

@@ -2,9 +2,12 @@ package com.radekrates.service;
 
 import com.radekrates.domain.Iban;
 import com.radekrates.domain.User;
+import com.radekrates.domain.dto.iban.IbanToUserDto;
+import com.radekrates.domain.dto.user.UserEmailDto;
 import com.radekrates.repository.IbanRepository;
 import com.radekrates.repository.UserRepository;
 import com.radekrates.service.exceptions.iban.IbanConflictException;
+import com.radekrates.service.exceptions.iban.IbanDataConflictException;
 import com.radekrates.service.exceptions.iban.IbanNotFoundException;
 import com.radekrates.service.exceptions.iban.IbanToUserConflictException;
 import com.radekrates.service.exceptions.user.UserNotFoundException;
@@ -29,20 +32,23 @@ public class IbanServiceDb {
     public Iban saveIban(final Iban iban) {
         if (ibanRepository.existsByIbanNumber(iban.getIbanNumber())) {
             throw new IbanConflictException();
+        } else if (iban.getIbanNumber().length() != 30) {
+            throw new IbanDataConflictException();
         } else {
-            log.info("Iban has been saved in database: " + iban.getIbanNumber());
+            log.info("Iban has been saved in database: " + iban.getCountryCode() + iban.getIbanNumber());
             return ibanRepository.save(iban);
         }
     }
 
-    public void saveIbanToUser(final String userEmail, final String ibanNumber) {
-        User user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
-        Iban iban = ibanRepository.findByIbanNumber(ibanNumber).orElseThrow(IbanNotFoundException::new);
-        if (iban.getIbanNumber().equals(ibanNumber)) {
+    public void saveIbanToUser(final IbanToUserDto ibanToUserDto) {
+        User user = userRepository.findByEmail(ibanToUserDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
+        Iban iban = ibanRepository.findByIbanNumber(ibanToUserDto.getIban()).orElseThrow(IbanNotFoundException::new);
+        if (iban.getIbanNumber().equals(ibanToUserDto.getIban()) && user.isActive() && !user.isBlocked()) {
             user.getIbans().add(iban);
             iban.setUser(user);
             userRepository.save(user);
-            log.info("Iban " + ibanNumber + " has been linked to " + userEmail);
+            log.info("Iban " + iban.getCountryCode() + ibanToUserDto.getIban() + " has been linked to "
+                    + ibanToUserDto.getUserEmail());
         } else {
             throw new IbanToUserConflictException();
         }
@@ -68,9 +74,9 @@ public class IbanServiceDb {
         return ibanRepository.findAll();
     }
 
-    public Set<Iban> getIbansRelatedToUser(final String userEmail) {
-        User user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
-        log.info("Getting ibans related to: " + userEmail);
+    public Set<Iban> getIbansRelatedToUser(final UserEmailDto userEmailDto) {
+        User user = userRepository.findByEmail(userEmailDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
+        log.info("Getting ibans related to: " + userEmailDto.getUserEmail());
         return user.getIbans();
     }
 

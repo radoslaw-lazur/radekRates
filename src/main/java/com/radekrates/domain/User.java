@@ -41,6 +41,9 @@ public class User {
     @Column(name = "USER_COUNTRY")
     private String country;
     @NotNull
+    @Column(name = "USER_ACTIVATION_CODE")
+    private String activationCode;
+    @NotNull
     @Column(name = "USER_ISACTIVE")
     private boolean isActive;
     @NotNull
@@ -62,7 +65,7 @@ public class User {
     private Set<Transaction> transactions = new HashSet<>();
 
     public User(Long id, String email, String password, String userFirstName, String userLastName, int age,
-                String country, boolean isActive, boolean isBlocked) {
+                String country, String activationCode, boolean isActive, boolean isBlocked) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -70,17 +73,19 @@ public class User {
         this.userLastName = userLastName;
         this.age = age;
         this.country = country;
+        this.activationCode = activationCode;
         this.isActive = isActive;
         this.isBlocked = isBlocked;
     }
     public User(String email, String password, String userFirstName, String userLastName, int age, String country,
-                boolean isActive, boolean isBlocked) {
+                String activationCode, boolean isActive, boolean isBlocked) {
         this.email = email;
         this.password = password;
         this.userFirstName = userFirstName;
         this.userLastName = userLastName;
         this.age = age;
         this.country = country;
+        this.activationCode = activationCode;
         this.isActive = isActive;
         this.isBlocked = isBlocked;
     }
