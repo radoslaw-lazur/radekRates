@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @GetMapping(value = "activateUser")
-    public void activateUser(@RequestBody UserActivationDto userActivationDto) {
-        userServiceDb.activateUser(userActivationDto);
+    public void activateUser(@RequestParam String activationCode) {
+        userServiceDb.activateUser(activationCode);
     }
 
     @GetMapping(value = "blockUser")
@@ -50,8 +50,6 @@ public class UserController {
     public UserLoggedInDto logIn(@RequestBody UserLogInDto userLogInDto) {
         return userServiceDb.logIn(userLogInDto);
     }
-
-
 
     @DeleteMapping(value = "deleteUser")
     public void deleteUser(@RequestParam Long userId) {

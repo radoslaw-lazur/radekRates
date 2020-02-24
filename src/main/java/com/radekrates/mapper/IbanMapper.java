@@ -15,6 +15,7 @@ public class IbanMapper {
                 ibanDto.getBankName(),
                 ibanDto.getBankLocalisation(),
                 ibanDto.getCountryCode(),
+                ibanDto.getCurrencyCode(),
                 ibanDto.getIbanNumber()
         );
     }
@@ -24,13 +25,14 @@ public class IbanMapper {
                 iban.getBankName(),
                 iban.getBankLocalisation(),
                 iban.getCountryCode(),
+                iban.getCurrencyCode(),
                 iban.getIbanNumber()
         );
     }
     public Set<IbanDto> mapToIbanDtoSet(final Set<Iban> ibans) {
         return ibans.stream()
-                .map(i -> new IbanDto(i.getId(), i.getBankName(), i.getBankLocalisation(),
-                        i.getCountryCode(), i.getIbanNumber()))
+                .map(i -> new IbanDto(i.getId(), i.getBankName(), i.getBankLocalisation(), i.getCountryCode(),
+                        i.getCurrencyCode(), i.getIbanNumber()))
                 .collect(Collectors.toSet());
     }
 }

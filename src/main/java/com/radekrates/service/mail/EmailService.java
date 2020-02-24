@@ -40,7 +40,7 @@ public class EmailService {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-            if (mail.getSubject().equals(SUBJECT_TRANSACTION)) {
+            if (mail.getSubject().equals("Dear " + user.getUserFirstName() + ": " + SUBJECT_TRANSACTION)) {
                 messageHelper.setText(mailCreatorService.buildTransactionEmail(mail.getMessage(), user, transaction), true);
             } else {
                 messageHelper.setText(mailCreatorService.buildSignInNotificationEmail(mail.getMessage(), user), true);

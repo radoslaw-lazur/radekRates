@@ -10,5 +10,6 @@ public class IbanDto {
     private String bankName;
     private String bankLocalisation;
     private String countryCode;
+    private String currencyCode;
     private String ibanNumber;
 }

@@ -28,12 +28,14 @@ public class IbanRepositoryTestSuite {
                 "bankName",
                 "bankLocalisation",
                 "PL",
+                "PLN",
                 "111111111111111111111111111111"
         );
         iban2 = new Iban(
                 "bankName",
                 "bankLocalisation",
                 "DE",
+                "EUR",
                 "222222222222222222222222222222"
         );
     }

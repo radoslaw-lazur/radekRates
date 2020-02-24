@@ -2,7 +2,6 @@ package com.radekrates.service;
 
 import com.radekrates.domain.Mail;
 import com.radekrates.domain.User;
-import com.radekrates.domain.dto.user.UserActivationDto;
 import com.radekrates.domain.dto.user.UserEmailDto;
 import com.radekrates.domain.dto.user.UserLogInDto;
 import com.radekrates.domain.dto.user.UserLoggedInDto;
@@ -14,6 +13,7 @@ import com.radekrates.service.exceptions.user.UserDataConflictException;
 import com.radekrates.service.exceptions.user.UserNotFoundException;
 import com.radekrates.service.generators.UniqueStringChainGenerator;
 import com.radekrates.service.mail.EmailService;
+import com.radekrates.service.validator.UserValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,33 +28,38 @@ public class UserServiceDb {
     private UniqueStringChainGenerator generator;
     private IbanMapper ibanMapper;
     private TransactionMapper transactionMapper;
+    private UserValidator userValidator;
+    private static final String ACTIVATION_LINK = "http://localhost:8080/v1/user/activateUser?activationCode=";
 
     @Autowired
     public UserServiceDb(UserRepository userRepository, EmailService emailService, UniqueStringChainGenerator generator,
-                         IbanMapper ibanMapper, TransactionMapper transactionMapper) {
+                         IbanMapper ibanMapper, TransactionMapper transactionMapper, UserValidator userValidator) {
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.generator = generator;
         this.ibanMapper = ibanMapper;
         this.transactionMapper = transactionMapper;
+        this.userValidator = userValidator;
     }
 
     public User saveUser(final User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new UserConflictException();
+        } else if (!userValidator.validateUserEmail(user.getEmail()) || !userValidator.validatePassword(user.getPassword())) {
+            throw new UserDataConflictException();
         } else {
             String activationCode = generator.createUniqueStringChain();
             user.setActivationCode(activationCode);
             log.info("User has been saved in database: " + user.getEmail());
             emailService.send(new Mail(user.getEmail(), "Dear " + user.getUserFirstName() +
-                    ", here is your activation code", activationCode), user, null);
+                    ", here is your activation link", ACTIVATION_LINK + activationCode), user, null);
             return userRepository.save(user);
         }
     }
 
-    public void activateUser(final UserActivationDto userActivationDto) {
-        User user = userRepository.findByEmail(userActivationDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
-        if (user.getActivationCode().equals(userActivationDto.getActivationCodeFront()) && !user.isActive()) {
+    public void activateUser(final String activationCode) {
+        User user = userRepository.findByActivationCode(activationCode).orElseThrow(UserNotFoundException::new);
+        if (user.getActivationCode().equals(activationCode) && !user.isActive()) {
             user.setActive(true);
             userRepository.save(user);
             log.info(user.getEmail() + " has been activated");

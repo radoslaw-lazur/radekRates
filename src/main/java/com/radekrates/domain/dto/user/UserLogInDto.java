@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class UserActivationDto {
+public class UserLogInDto {
     private Long id;
     private String userEmail;
-    private String activationCodeFront;
+    private String password;
 }

@@ -11,6 +11,7 @@ import com.radekrates.service.exceptions.iban.IbanDataConflictException;
 import com.radekrates.service.exceptions.iban.IbanNotFoundException;
 import com.radekrates.service.exceptions.iban.IbanToUserConflictException;
 import com.radekrates.service.exceptions.user.UserNotFoundException;
+import com.radekrates.service.validator.IbanValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,20 +23,22 @@ import java.util.Set;
 public class IbanServiceDb {
     private IbanRepository ibanRepository;
     private UserRepository userRepository;
+    private IbanValidator ibanValidator;
 
     @Autowired
-    public IbanServiceDb(IbanRepository ibanRepository, UserRepository userRepository) {
+    public IbanServiceDb(IbanRepository ibanRepository, UserRepository userRepository, IbanValidator ibanValidator) {
         this.ibanRepository = ibanRepository;
         this.userRepository = userRepository;
+        this.ibanValidator = ibanValidator;
     }
 
     public Iban saveIban(final Iban iban) {
         if (ibanRepository.existsByIbanNumber(iban.getIbanNumber())) {
             throw new IbanConflictException();
-        } else if (iban.getIbanNumber().length() != 30) {
+        } else if (!ibanValidator.validateIban(iban)) {
             throw new IbanDataConflictException();
         } else {
-            log.info("Iban has been saved in database: " + iban.getCountryCode() + iban.getIbanNumber());
+            log.info("Iban has been saved in database: " + iban.getIbanNumber());
             return ibanRepository.save(iban);
         }
     }
