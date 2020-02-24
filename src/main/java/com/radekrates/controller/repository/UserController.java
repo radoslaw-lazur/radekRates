@@ -1,8 +1,6 @@
 package com.radekrates.controller.repository;
 
-import com.radekrates.domain.dto.user.UserActivationDto;
-import com.radekrates.domain.dto.user.UserDto;
-import com.radekrates.domain.dto.user.UserEmailDto;
+import com.radekrates.domain.dto.user.*;
 import com.radekrates.mapper.UserMapper;
 import com.radekrates.service.UserServiceDb;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +45,13 @@ public class UserController {
     public void unblockUser(@RequestBody UserEmailDto userEmailDto) {
         userServiceDb.unblockUser(userEmailDto);
     }
+
+    @GetMapping(value = "logIn")
+    public UserLoggedInDto logIn(@RequestBody UserLogInDto userLogInDto) {
+        return userServiceDb.logIn(userLogInDto);
+    }
+
+
 
     @DeleteMapping(value = "deleteUser")
     public void deleteUser(@RequestParam Long userId) {

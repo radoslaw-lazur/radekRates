@@ -51,7 +51,7 @@ public class TransactionServiceDb {
             user.getTransactions().add(transaction);
             transaction.setUser(user);
             userRepository.save(user);
-            emailService.send(new Mail(user.getEmail(), SUBJECT_TRANSACTION, ""));
+            emailService.send(new Mail(user.getEmail(), SUBJECT_TRANSACTION, ""), user, transaction);
             log.info("Transaction " + temporaryUniqueStringChain + " has been linked to " +
                     transactionToProcessDto.getUserEmail());
         } else {

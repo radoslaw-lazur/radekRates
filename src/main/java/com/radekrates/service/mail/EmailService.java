@@ -1,6 +1,8 @@
 package com.radekrates.service.mail;
 
 import com.radekrates.domain.Mail;
+import com.radekrates.domain.Transaction;
+import com.radekrates.domain.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
@@ -22,10 +24,10 @@ public class EmailService {
         this.mailCreatorService = mailCreatorService;
     }
 
-    public void send(final Mail mail) {
+    public void send(final Mail mail, final User user, Transaction transaction) {
         log.info("Starting e-mail preparation... to " + mail.getMailTo() + " : " + mail.getSubject());
         try {
-            javaMailSender.send(createMimeMessage(mail));
+            javaMailSender.send(createMimeMessage(mail, user, transaction));
             log.info("Email to " + mail.getMailTo() + " has been sent" + " regarding " + mail.getSubject());
         } catch (MailException e) {
             log.info("Failed to process e-mail sending to " + mail.getMailTo() + " regarding "
@@ -33,15 +35,15 @@ public class EmailService {
         }
     }
 
-    public MimeMessagePreparator createMimeMessage(final Mail mail) {
+    public MimeMessagePreparator createMimeMessage(final Mail mail, final User user, final Transaction transaction) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
             if (mail.getSubject().equals(SUBJECT_TRANSACTION)) {
-                messageHelper.setText(mailCreatorService.buildTransactionEmail(mail.getMessage()), true);
+                messageHelper.setText(mailCreatorService.buildTransactionEmail(mail.getMessage(), user, transaction), true);
             } else {
-                messageHelper.setText(mailCreatorService.buildSignInNotificationEmail(mail.getMessage()), true);
+                messageHelper.setText(mailCreatorService.buildSignInNotificationEmail(mail.getMessage(), user), true);
             }
         };
     }

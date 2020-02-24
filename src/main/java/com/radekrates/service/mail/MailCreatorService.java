@@ -2,6 +2,9 @@ package com.radekrates.service.mail;
 
 import com.radekrates.config.AdminConfig;
 import com.radekrates.config.CompanyDetails;
+import com.radekrates.domain.Transaction;
+import com.radekrates.domain.User;
+import com.radekrates.domain.dto.user.UserEmailDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -24,21 +27,34 @@ public class MailCreatorService {
         this.templateEngine = templateEngine;
     }
 
-    public String buildTransactionEmail(String message) {
+    public String buildTransactionEmail(String message, User user, Transaction transaction) {
         context = new Context();
         context.setVariable("message", message);
-        makeSharedDataContext();
+        context.setVariable("TransactionPair", transaction.getPairOfCurrencies());
+        context.setVariable("TransactionInputValue:", transaction.getInputValue());
+        context.setVariable("TransactionOutputValue", transaction.getOutputValue());
+        context.setVariable("TransactionInputIban", transaction.getInputIbanNumber());
+        context.setVariable("TransactionOutputIban", transaction.getOutputIbanNumber());
+        context.setVariable("purchased", transaction.getApiCurrencyPurchaseMultiplier());
+        context.setVariable("sold", transaction.getCurrencySaleMultiplier());
+        context.setVariable("date", transaction.getDate());
+
+        makeSharedDataContext(user);
         return templateEngine.process("mail/transaction_email", context);
     }
 
-    public String buildSignInNotificationEmail(String message) {
+    public String buildSignInNotificationEmail(String message, User user) {
         context = new Context();
         context.setVariable("message", message);
-        makeSharedDataContext();
+        makeSharedDataContext(user);
         return templateEngine.process("mail/sign_in_notification", context);
     }
 
-    private void makeSharedDataContext() {
+    private void makeSharedDataContext(User user) {
+        context.setVariable("userFirstName", user.getUserFirstName());
+        context.setVariable("userLastName", user.getUserLastName());
+        context.setVariable("dear", "Dear ");
+        context.setVariable("coma", ",");
         context.setVariable("goodbye", "Best regards: " + adminConfig.getAdminName());
         context.setVariable("details", "Company Details:");
         context.setVariable("admin_name", adminConfig.getAdminName());
