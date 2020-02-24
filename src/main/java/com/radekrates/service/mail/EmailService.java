@@ -24,7 +24,7 @@ public class EmailService {
         this.mailCreatorService = mailCreatorService;
     }
 
-    public void send(final Mail mail, final User user, Transaction transaction) {
+    public void send(final Mail mail, final User user, final Transaction transaction) {
         log.info("Starting e-mail preparation... to " + mail.getMailTo() + " : " + mail.getSubject());
         try {
             javaMailSender.send(createMimeMessage(mail, user, transaction));
