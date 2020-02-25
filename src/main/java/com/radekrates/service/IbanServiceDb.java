@@ -50,8 +50,7 @@ public class IbanServiceDb {
             user.getIbans().add(iban);
             iban.setUser(user);
             userRepository.save(user);
-            log.info("Iban " + iban.getCountryCode() + ibanToUserDto.getIban() + " has been linked to "
-                    + ibanToUserDto.getUserEmail());
+            log.info("Iban " + ibanToUserDto.getIban() + " has been linked to " + ibanToUserDto.getUserEmail());
         } else {
             throw new IbanToUserConflictException();
         }

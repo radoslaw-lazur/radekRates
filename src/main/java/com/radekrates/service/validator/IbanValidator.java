@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class IbanValidator {
+    protected boolean isFirstLetter;
+    protected boolean isSecondLetter;
 
     public boolean validateIban(final Iban iban) {
         return (iban.getCurrencyCode().equals("EUR") || iban.getCurrencyCode().equals("PLN") ||
@@ -20,8 +22,8 @@ public class IbanValidator {
                 countedLetters++;
             }
         }
-        boolean isFirstLetter = Character.isLetter(validatedIbanNumber.charAt(0));
-        boolean isSecondLetter = Character.isLetter(validatedIbanNumber.charAt(1));
+        isFirstLetter = Character.isLetter(validatedIbanNumber.charAt(0));
+        isSecondLetter = Character.isLetter(validatedIbanNumber.charAt(1));
         return countedLetters == 2 && isFirstLetter && isSecondLetter;
     }
 }

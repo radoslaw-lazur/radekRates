@@ -4,6 +4,7 @@ import com.radekrates.domain.dto.user.*;
 import com.radekrates.mapper.UserMapper;
 import com.radekrates.service.UserServiceDb;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -32,8 +33,8 @@ public class UserController {
     }
 
     @GetMapping(value = "activateUser")
-    public void activateUser(@RequestParam String activationCode) {
-        userServiceDb.activateUser(activationCode);
+    public boolean activateUser(@RequestParam String activationCode) {
+        return userServiceDb.activateUser(activationCode);
     }
 
     @GetMapping(value = "blockUser")
@@ -46,9 +47,9 @@ public class UserController {
         userServiceDb.unblockUser(userEmailDto);
     }
 
-    @GetMapping(value = "logIn")
-    public UserLoggedInDto logIn(@RequestBody UserLogInDto userLogInDto) {
-        return userServiceDb.logIn(userLogInDto);
+    @GetMapping(value = "getDataRelatedToUser")
+    public UserLoggedInDto getDataRelatedToUser(@RequestBody UserLogInDto userLogInDto) {
+        return userServiceDb.getDataRetaltedToUser(userLogInDto);
     }
 
     @DeleteMapping(value = "deleteUser")

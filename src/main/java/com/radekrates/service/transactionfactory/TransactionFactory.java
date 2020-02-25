@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 
 @Slf4j
 @Getter
@@ -28,18 +29,23 @@ public class TransactionFactory {
     private TransactionServiceDb transactionServiceDb;
     private CurrrencyCalculator currrencyCalculator;
     private UniqueStringChainGenerator generator;
+    private TransactionFactoryCalculator transactionFactoryCalculator;
+    private TransactionRecognizer recognizer;
     private CurrencyBase currencyBase;
     private String uniqueStringChain;
-    private BigDecimal ratio = new BigDecimal("1.02");
     private final static MathContext MATH_CONTEXT = new MathContext(4, RoundingMode.CEILING);
+    private String temporaryAdminKey = null;
 
     @Autowired
     public TransactionFactory(IbanRepository ibanRepository, TransactionServiceDb transactionServiceDb,
-                              CurrrencyCalculator currrencyCalculator, UniqueStringChainGenerator generator) {
+                              CurrrencyCalculator currrencyCalculator, UniqueStringChainGenerator generator,
+                              TransactionFactoryCalculator transactionFactoryCalculator, TransactionRecognizer recognizer) {
         this.ibanRepository = ibanRepository;
         this.transactionServiceDb = transactionServiceDb;
         this.currrencyCalculator = currrencyCalculator;
         this.generator = generator;
+        this.transactionFactoryCalculator = transactionFactoryCalculator;
+        this.recognizer = recognizer;
     }
 
     public Transaction createTransaction(TransactionToProcessDto transactionProccesDto) {
@@ -48,11 +54,11 @@ public class TransactionFactory {
                 .orElseThrow(IbanNotFoundException::new);
         Iban outputIbanDb = ibanRepository.findByIbanNumber(transactionProccesDto.getOutputIbanNumber())
                 .orElseThrow(IbanNotFoundException::new);
-
         currencyBase = currrencyCalculator.createLiveCurrencyBase(transactionProccesDto.getCurrencyPair().substring(0, 3));
-        BigDecimal purchasedCurrency = recognizeSaleCurrency(transactionProccesDto.getCurrencyPair().substring(4, 7));
-        BigDecimal soldCurrency = purchasedCurrency.multiply(ratio).round(MATH_CONTEXT);
-        BigDecimal profit = soldCurrency.subtract(purchasedCurrency);
+        BigDecimal purchasedCurrency = getSaleCurrency(transactionProccesDto.getCurrencyPair().substring(4, 7));
+        BigDecimal soldCurrency = purchasedCurrency.multiply(recognizer.recognizeCurrencyRatioPair(transactionProccesDto
+                .getCurrencyPair(), temporaryAdminKey)).round(MATH_CONTEXT);
+        BigDecimal unitProfit = soldCurrency.subtract(purchasedCurrency);
         uniqueStringChain = generator.createUniqueStringChain();
         transactionServiceDb.setTemporaryUniqueStringChain(uniqueStringChain);
 
@@ -63,15 +69,15 @@ public class TransactionFactory {
                 outputIbanDb.getIbanNumber(),
                 transactionProccesDto.getCurrencyPair(),
                 transactionProccesDto.getInputValue(),
-                calculateOutputValue(transactionProccesDto.getInputValue(), soldCurrency),
+                transactionFactoryCalculator.calculateOutputValue(transactionProccesDto.getInputValue(), soldCurrency),
                 purchasedCurrency,
                 soldCurrency,
-                profit.multiply(transactionProccesDto.getInputValue()).round(MATH_CONTEXT),
+                transactionFactoryCalculator.calculateProfit(unitProfit, transactionProccesDto.getInputValue()),
                 currencyBase.getDate()
         );
     }
 
-    private BigDecimal recognizeSaleCurrency(String saleCurrency) {
+    private BigDecimal getSaleCurrency(String saleCurrency) {
         switch (saleCurrency) {
             case "EUR":
                 return currencyBase.getEur();
@@ -86,9 +92,5 @@ public class TransactionFactory {
             default:
                 throw new IndexOutOfBoundsException();
         }
-    }
-
-    private BigDecimal calculateOutputValue(BigDecimal inputValue, BigDecimal multiplier) {
-        return inputValue.multiply(multiplier).round(MATH_CONTEXT);
     }
 }

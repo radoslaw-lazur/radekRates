@@ -57,12 +57,13 @@ public class UserServiceDb {
         }
     }
 
-    public void activateUser(final String activationCode) {
+    public boolean activateUser(final String activationCode) {
         User user = userRepository.findByActivationCode(activationCode).orElseThrow(UserNotFoundException::new);
         if (user.getActivationCode().equals(activationCode) && !user.isActive()) {
             user.setActive(true);
             userRepository.save(user);
             log.info(user.getEmail() + " has been activated");
+            return true;
         } else {
             throw new UserDataConflictException();
         }
@@ -88,7 +89,7 @@ public class UserServiceDb {
         }
     }
 
-    public UserLoggedInDto logIn(final UserLogInDto userLogInDto) {
+    public UserLoggedInDto getDataRetaltedToUser(final UserLogInDto userLogInDto) {
         User user = userRepository.findByEmail(userLogInDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
         if (user.isActive() && !user.isBlocked() && user.getEmail().equals(userLogInDto.getUserEmail())
                 && user.getPassword().equals(userLogInDto.getPassword())) {

@@ -43,10 +43,10 @@ public class Transaction {
     @Column(name = "TRANSACTION_OUTPUT")
     private BigDecimal outputValue;
     @NotNull
-    @Column(name = "TRANSACTION_CURRENCY_PURCHASE")
+    @Column(name = "TRANSACTION_CURRENCY_PURCHASE", columnDefinition = "Decimal(10,4) default '100.0000'")
     private BigDecimal apiCurrencyPurchaseMultiplier;
     @NotNull
-    @Column(name = "TRANSACTION_CURRENCY_SALE")
+    @Column(name = "TRANSACTION_CURRENCY_SALE", columnDefinition = "Decimal(10,4) default '100.0000'")
     private BigDecimal currencySaleMultiplier;
     @NotNull
     @Column(name = "PROFIT")
