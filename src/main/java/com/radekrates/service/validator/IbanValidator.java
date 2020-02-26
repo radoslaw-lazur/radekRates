@@ -11,7 +11,7 @@ public class IbanValidator {
     public boolean validateIban(final Iban iban) {
         return (iban.getCurrencyCode().equals("EUR") || iban.getCurrencyCode().equals("PLN") ||
                 iban.getCurrencyCode().equals("GBP") || iban.getCurrencyCode().equals("CHF") ||
-                iban.getCurrencyCode().equals("USD")) && (iban.getIbanNumber().length() == 32
+                iban.getCurrencyCode().equals("USD")) && (iban.getIbanNumber().length() == 20
                 && iban.getCountryCode().length() == 2 && validateLetter(iban.getIbanNumber()));
     }
 

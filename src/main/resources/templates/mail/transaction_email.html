@@ -19,14 +19,15 @@
                     <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
                         <table border="0" cellpadding="0" cellspacing="0" width="100%">
                             <tr>
-                                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 20px;">
+                                <td style="color: #153643; font-family: 'Times New Roman', sans-serif; font-size: 16px;">
                                     <b>New transaction has been made! Below details related to the order :)</b>
                                 </td>
                             </tr>
                             <tr>
                                 <td style="padding: 20px 0 30px 0; color: #153643; font-family: 'Times New Roman', sans-serif; font-size: 16px; line-height: 20px;">
-                                    <span class="apple-link" style="color: #000000; font-size: 14px; text-align: center; "th:text="${dear}"></span>
-                                    <span class="apple-link" style="color: #000000; font-size: 14px; text-align: center; "th:text="${userFirstName}"></span>
+                                    <span class="apple-link" style="color: #000000; font-size: 16px; text-align: center; "th:text="${dear}"></span>
+                                    <span class="apple-link" style="color: #000000; font-size: 16px; text-align: center; "th:text="${userFirstName}"></span>
+                                    ,
                                     <br/>
                                     <br/>
                                     Please note that the transaction is not real. The app does not store any sensitive information. The provided Ibans are with wrong dimension. Below you can see only the result regarding the app operation.
@@ -44,18 +45,28 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="padding: 25px 0 0 0; color: #153643; font-family: 'Times New Roman', sans-serif; font-size: 14px; line-height: 20px;">
+                                                        <td style="padding: 25px 0 0 0; color: #000000; font-family: 'Times New Roman', sans-serif; font-size: 14px; line-height: 17px;">
                                                             <b>
-                                                                Input Iban: <br/>
-                                                                Output Iban: <br/>
-                                                                Pair of Currencies: <br/>
-                                                                Input value: <br/>
-                                                                Output value: <br/>
-                                                                Currency purchased: <br/>
-                                                                Currency sold: <br/>
+                                                                Input Iban:
+                                                                <span class="apple-link" style="color: #3280F6; font-size: 14px; text-align: center; "th:text="${TransactionInputIban}"></span> <br/>
+                                                                Output Iban:
+                                                                <span class="apple-link" style="color: #3280F6; font-size: 14px; text-align: center; "th:text="${TransactionOutputIban}"></span> <br/>
+                                                                Pair of Currencies:
+                                                                <span class="apple-link" style="color: #3280F6; font-size: 14px; text-align: center; "th:text="${TransactionPair}"></span> <br/>
+                                                                Input value:
+                                                                <span class="apple-link" style="color: #3280F6; font-size: 14px; text-align: center; "th:text="${TransactionInputValue}"></span> <br/>
+                                                                Output value:
+                                                                <span class="apple-link" style="color: #3280F6; font-size: 14px; text-align: center; "th:text="${TransactionOutputValue}"></span> <br/>
+                                                                Currency purchased:
+                                                                <span class="apple-link" style="color: #3280F6; font-size: 14px; text-align: center; "th:text="${purchased}"></span> <br/>
+                                                                Currency sold:
+                                                                <span class="apple-link" style="color: #3280F6; font-size: 14px; text-align: center; "th:text="${sold}"></span> <br/>
                                                                 Date:
+                                                                <span class="apple-link" style="color: #3280F6; font-size: 14px; text-align: center; "th:text="${date}"></span> <br/>
                                                                 <br/>
                                                             </b>
+                                                            <br/>
+                                                            If you have any issues, contact me via radoslaw.lazur.dev@gmail.com
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -63,7 +74,7 @@
                                             <td style="font-size: 0; line-height: 0;" width="20">
                                                 &nbsp;
                                             </td>
-                                            <td width="260" valign="top">
+                                            <td width="1" valign="top">
                                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                     <tr>
                                                         <td>
@@ -71,15 +82,8 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="padding: 25px 0 0 0; color: #153643; font-family: 'Times New Roman', sans-serif; font-size: 13px; line-height: 20px;">
-                                                            <span class="apple-link" style="color: #000000; font-size: 13px; text-align: center; "th:text="${TransactionInputIban}"></span> <br/>
-                                                            <span class="apple-link" style="color: #000000; font-size: 13px; text-align: center; "th:text="${TransactionOutputIban}"></span> <br/>
-                                                            <span class="apple-link" style="color: #000000; font-size: 13px; text-align: center; "th:text="${TransactionPair}"></span> <br/>
-                                                            <span class="apple-link" style="color: #000000; font-size: 13px; text-align: center; "th:text="${TransactionInputValue}"></span> <br/>
-                                                            <span class="apple-link" style="color: #000000; font-size: 13px; text-align: center; "th:text="${TransactionOutputValue}"></span> <br/>
-                                                            <span class="apple-link" style="color: #000000; font-size: 13px; text-align: center; "th:text="${purchased}"></span> <br/>
-                                                            <span class="apple-link" style="color: #000000; font-size: 13px; text-align: center; "th:text="${sold}"></span> <br/>
-                                                            <span class="apple-link" style="color: #000000; font-size: 13px; text-align: center; "th:text="${date}"></span> <br/>
+                                                        <td style="padding: 25px 0 0 0; color: #153643; font-family: 'Times New Roman', sans-serif; font-size: 12px; line-height: 20px;">
+
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -95,20 +99,20 @@
                     <td bgcolor="#9A9A9A    " style="padding: 30px 30px 30px 30px;">
                         <table border="0" cellpadding="0" cellspacing="0" width="100%">
                             <tr>
-                                <td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;" width="75%">
+                                <td style="color: #ffffff; font-family: 'Times New Roman', sans-serif; font-size: 14px;" width="75%">
                                     Go to se my project on GitHub :)<br/>
                                     <a href="#" style="color: #ffffff;"><font color="#ffffff"></font></a> Created by Radoslaw Lazur - 2020.
                                 </td>
                                 <td align="right" width="25%">
                                     <table border="0" cellpadding="0" cellspacing="0">
                                         <tr>
-                                            <td style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;">
+                                            <td style="font-family: 'Times New Roman', sans-serif; font-size: 12px; font-weight: bold;">
                                                 <a href="https://github.com/radoslaw-lazur" style="color: #ffffff;">
                                                     <img src="https://github.githubassets.com/images/modules/logos_page/Octocat.png" alt="Twitter" width="38" height="38" style="display: block;" border="0" />
                                                 </a>
                                             </td>
                                             <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
-                                            <td style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;">
+                                            <td style="font-family: 'Times New Roman', sans-serif; font-size: 12px; font-weight: bold;">
                                                 <a href="https://www.linkedin.com/in/rados%C5%82aw-%C5%82azur-050597137/" style="color: #ffffff;">
                                                     <img src="https://zapodaj.net/images/b81a7c0835003.png" alt="LinkedIn" width="38" height="38" style="display: block;" border="0" />
                                                 </a>
