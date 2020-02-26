@@ -31,7 +31,7 @@ public class MailCreatorService {
         context = new Context();
         context.setVariable("message", message);
         context.setVariable("TransactionPair", transaction.getPairOfCurrencies());
-        context.setVariable("TransactionInputValue:", transaction.getInputValue());
+        context.setVariable("TransactionInputValue", transaction.getInputValue());
         context.setVariable("TransactionOutputValue", transaction.getOutputValue());
         context.setVariable("TransactionInputIban", transaction.getInputIbanNumber());
         context.setVariable("TransactionOutputIban", transaction.getOutputIbanNumber());
