@@ -102,8 +102,6 @@ public class IbanRepositoryTestSuite {
         //Given
         ibanRepository.save(iban1);
         ibanRepository.save(iban2);
-        Long iban1Id = iban1.getId();
-        Long iban2Id = iban2.getId();
         //When
         Optional<Iban> ibanFromDb = ibanRepository.findByIbanNumber("111111111111111111111111111111");
         //Then

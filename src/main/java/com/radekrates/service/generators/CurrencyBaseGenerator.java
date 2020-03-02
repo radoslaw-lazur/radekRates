@@ -2,6 +2,7 @@ package com.radekrates.service.generators;
 
 import com.radekrates.service.datafixerio.calculation.CurrencyBase;
 import com.radekrates.service.datafixerio.calculation.CurrrencyCalculator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,7 +14,7 @@ public class CurrencyBaseGenerator {
     private final String CHF = "CHF";
     private final String USD = "USD";
 
-
+    @Autowired
     public CurrencyBaseGenerator(CurrrencyCalculator currrencyCalculator) {
         this.currrencyCalculator = currrencyCalculator;
     }
