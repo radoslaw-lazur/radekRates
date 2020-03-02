@@ -4,7 +4,6 @@ import com.radekrates.config.AdminConfig;
 import com.radekrates.config.CompanyDetails;
 import com.radekrates.domain.Transaction;
 import com.radekrates.domain.User;
-import com.radekrates.domain.dto.user.UserEmailDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,6 @@ public class MailCreatorService {
         context.setVariable("purchased", transaction.getApiCurrencyPurchaseMultiplier());
         context.setVariable("sold", transaction.getCurrencySaleMultiplier());
         context.setVariable("date", transaction.getDate());
-
         makeSharedDataContext(user);
         return templateEngine.process("mail/transaction_email", context);
     }
@@ -48,6 +46,13 @@ public class MailCreatorService {
         context.setVariable("message", message);
         makeSharedDataContext(user);
         return templateEngine.process("mail/sign_in_notification", context);
+    }
+
+    public String buildScheduledEmail(final String message, final String weatherData) {
+        context = new Context();
+        context.setVariable("currencyData", message);
+        context.setVariable("weatherData", weatherData);
+        return templateEngine.process("mail/scheduled_mail_currency_weather", context);
     }
 
     private void makeSharedDataContext(User user) {

@@ -51,8 +51,8 @@ public class UserServiceDb {
             String activationCode = generator.createUniqueStringChain();
             user.setActivationCode(activationCode);
             log.info("User has been saved in database: " + user.getEmail());
-            emailService.send(new Mail(user.getEmail(), "Dear " + user.getUserFirstName() +
-                    ", here is your activation link", ACTIVATION_LINK + activationCode), user, null);
+            emailService.sendActivationLink(new Mail(user.getEmail(), "Dear " + user.getUserFirstName() +
+                    ", here is your activation link", ACTIVATION_LINK + activationCode), user);
             return userRepository.save(user);
         }
     }

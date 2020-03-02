@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.Map;
 
 @Service
 public class CurrrencyCalculator {
@@ -22,8 +23,8 @@ public class CurrrencyCalculator {
     }
 
     public CurrencyBase createLiveCurrencyBase(String currency) {
-        DataFixerDto dataFixerDto = getDataFixerData();
-        RatesDto ratesDto = getDataFixerData().getRatesDto();
+        DataFixerDto dataFixerDto = dataFixerClient.getDataFixerData();
+        RatesDto ratesDto = dataFixerDto.getRatesDto();
         switch (currency) {
             case "EUR":
                 return new CurrencyBase(
@@ -82,9 +83,5 @@ public class CurrrencyCalculator {
             default:
                 return null;
         }
-    }
-
-    private DataFixerDto getDataFixerData() {
-        return dataFixerClient.getDataFixerData();
     }
 }
