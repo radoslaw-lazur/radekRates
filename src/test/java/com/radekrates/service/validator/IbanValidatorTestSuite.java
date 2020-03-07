@@ -1,7 +1,6 @@
-package com.radekrates.validator;
+package com.radekrates.service.validator;
 
 import com.radekrates.domain.Iban;
-import com.radekrates.service.validator.IbanValidator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

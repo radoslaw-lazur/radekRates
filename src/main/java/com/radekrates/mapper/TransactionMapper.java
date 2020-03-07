@@ -12,8 +12,8 @@ public class TransactionMapper {
     public Transaction mapToTransaction(final TransactionDto transactionDto) {
         return new Transaction(
                 transactionDto.getId(),
-                transactionDto.getUserEmail(),
                 transactionDto.getUniqueKeyChain(),
+                transactionDto.getUserEmail(),
                 transactionDto.getInputIbanNumber(),
                 transactionDto.getOutputIbanNumber(),
                 transactionDto.getPairOfCurrencies(),
