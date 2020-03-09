@@ -147,19 +147,6 @@ public class AdminRatioControllerTestSuite {
                 .andExpect(jsonPath("$[0].ratioUSD_CHF", is(20)));
     }
 
-    //@Test
-    public void shouldSaveRatios() throws Exception {
-        //Given
-        String jsonContent = new Gson().toJson(adminRatioDto);
-        when(adminRatioServiceDb.saveAdminRatio(adminRatioMapper.mapToAdminRatio(adminRatioDto))).thenReturn(adminRatio);
-        //When & Then
-        mockMvc.perform(post("/v1/admin/saveRatios")
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding("UTF-8")
-                .content(jsonContent))
-                .andExpect(status().isOk());
-    }
-
     @Test
     public void shouldDeleteAllRatios() throws Exception {
         //Given

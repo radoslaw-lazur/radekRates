@@ -29,7 +29,8 @@ public class EmailService {
         log.info("Starting e-mail preparation... to " + mail.getMailTo() + " : " + mail.getSubject());
         try {
             String activationMail = prepareActivationMail(mail, user);
-            javaMailSender.send(createMimeMessageActivation(mail, activationMail));
+            mail.setMessage(activationMail);
+            javaMailSender.send(createMimeMessageActivation(mail));
             log.info("Email to " + mail.getMailTo() + " has been sent" + " regarding " + mail.getSubject());
         } catch (MailException e) {
             log.info("Failed to process e-mail sending to " + mail.getMailTo() + " regarding "
@@ -41,7 +42,8 @@ public class EmailService {
         log.info("Starting e-mail preparation... to " + mail.getMailTo() + " : " + mail.getSubject());
         try {
             String transactionMail = prepareTransactionMail(mail, user, transaction);
-            javaMailSender.send(createMimeMessageTransaction(mail, transactionMail));
+            mail.setMessage(transactionMail);
+            javaMailSender.send(createMimeMessageTransaction(mail));
             log.info("Email to " + mail.getMailTo() + " has been sent" + " regarding " + mail.getSubject());
         } catch (MailException e) {
             log.info("Failed to process e-mail sending to " + mail.getMailTo() + " regarding "
@@ -49,21 +51,21 @@ public class EmailService {
         }
     }
 
-    private MimeMessagePreparator createMimeMessageActivation(final Mail mail, final String preparedMail) {
+    private MimeMessagePreparator createMimeMessageActivation(final Mail mail) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(preparedMail, true);
+            messageHelper.setText(mail.getMessage(), true);
         };
     }
 
-    private MimeMessagePreparator createMimeMessageTransaction(final Mail mail, String message) {
+    private MimeMessagePreparator createMimeMessageTransaction(final Mail mail) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(message, true);
+            messageHelper.setText(mail.getMessage(), true);
         };
     }
 

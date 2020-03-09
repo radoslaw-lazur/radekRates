@@ -31,19 +31,20 @@ public class ScheduledEmailService {
     public void send(final Mail mail, final String weatherData) {
         try {
             String scheduledMail = prepareScheduledEmail(mail, weatherData);
-            javaMailSender.send(createMimeMessage(mail, scheduledMail));
+            mail.setMessage(scheduledMail);
+            javaMailSender.send(createMimeMessage(mail));
         } catch (MailException e) {
             log.info("Failed to process e-mail sending to " + mail.getMailTo() + " regarding "
                     + mail.getSubject() + " {}", e.getMessage(), e);
         }
     }
 
-    private MimeMessagePreparator createMimeMessage(final Mail mail, final String preparedMail) {
+    private MimeMessagePreparator createMimeMessage(final Mail mail) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(makeUserEmailArray());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(preparedMail, true);
+            messageHelper.setText(mail.getMessage(), true);
         };
     }
 

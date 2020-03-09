@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 @Service
 @Slf4j
 public class EmailScheduler {
@@ -33,7 +36,8 @@ public class EmailScheduler {
         String currencyMessage = currencyBaseGenerator.generateCurrencyBaseString();
         String weatherMessage = openWeatherGenerator.generateOpenWeatherData();
         if (!userServiceDb.getAllUsers().isEmpty()) {
-            scheduledEmailService.send(new Mail("radoslaw.lazur.dev@gmail.com", "Daily data provided by " +
+            scheduledEmailService.send(new Mail("radoslaw.lazur.dev@gmail.com",
+                     LocalDate.now(ZoneId.of("Europe/Warsaw")) + " - " + "Daily data provided by " +
                     "Radoslaw's rates exchanges", currencyMessage), weatherMessage);
             log.info("Scheduled emails have been sent");
         }
