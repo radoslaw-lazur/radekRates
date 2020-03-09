@@ -16,14 +16,12 @@ import java.util.Set;
 @RestController
 @RequestMapping("/v1/admin")
 public class AdminController {
-    private DataFixerClient dataFixerClient;
     private AdminRatioServiceDb adminRatioServiceDb;
     private AdminRatioMapper adminRatioMapper;
 
     @Autowired
-    public AdminController(DataFixerClient dataFixerClient, AdminRatioServiceDb adminRatioServiceDb,
+    public AdminController(AdminRatioServiceDb adminRatioServiceDb,
                            AdminRatioMapper adminRatioMapper) {
-        this.dataFixerClient = dataFixerClient;
         this.adminRatioServiceDb = adminRatioServiceDb;
         this.adminRatioMapper = adminRatioMapper;
     }
@@ -41,11 +39,5 @@ public class AdminController {
     @DeleteMapping(value = "deleteAllRatios")
     public void deleteAllFalseRatios() {
         adminRatioServiceDb.deleteAll();
-    }
-
-    @GetMapping(value = "getDataFixer")
-    public DataFixerDto getDataFixerData() {
-        log.info("FixerData has been downloaded");
-        return dataFixerClient.getDataFixerData();
     }
 }

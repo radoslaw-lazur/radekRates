@@ -17,7 +17,6 @@ public class AdminRatioServiceDb {
     private AdminRatioRepository adminRatioRepository;
     private UniqueStringChainGenerator generatorKey;
     private TransactionFactory transactionFactory;
-    private String generatedKey = "";
 
     @Autowired
     public AdminRatioServiceDb(AdminRatioRepository adminRatioRepository, UniqueStringChainGenerator generatorKey,
@@ -27,8 +26,8 @@ public class AdminRatioServiceDb {
         this.transactionFactory = transactionFactory;
     }
 
-    public void saveAdminRatio(final AdminRatio adminRatio) {
-        generatedKey = generatorKey.createUniqueStringChain();
+    public AdminRatio saveAdminRatio(final AdminRatio adminRatio) {
+        String generatedKey = generatorKey.createUniqueStringChain();
         transactionFactory.setTemporaryAdminKey(generatedKey);
         adminRatio.setKey(generatedKey);
         adminRatio.setDate(LocalDate.now());
@@ -36,7 +35,7 @@ public class AdminRatioServiceDb {
         Set<AdminRatio> adminRatiosSet = adminRatioRepository.findAll();
         adminRatiosSet.forEach(i -> i.setActive(false));
         log.info("Ratios have been saved in database: " + LocalDate.now() + " key: " + generatedKey);
-        adminRatioRepository.save(adminRatio);
+       return adminRatioRepository.save(adminRatio);
     }
 
     public Set<AdminRatio> getRatios() {

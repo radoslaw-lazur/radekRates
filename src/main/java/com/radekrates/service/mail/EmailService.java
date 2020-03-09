@@ -18,7 +18,6 @@ public class EmailService {
     @Qualifier("sender1")
     private JavaMailSender javaMailSender;
     private MailCreatorService mailCreatorService;
-    private static final String SUBJECT_TRANSACTION = "New Transaction from Radoslaw's Rates Exchanges";
 
     @Autowired
     public EmailService(JavaMailSender javaMailSender, MailCreatorService mailCreatorService) {

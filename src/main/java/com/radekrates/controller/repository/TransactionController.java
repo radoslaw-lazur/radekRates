@@ -27,21 +27,10 @@ public class TransactionController {
         this.transactionFactory = transactionFactory;
     }
 
-    @PostMapping(value = "saveTransaction")
-    public void  saveTransaction(@RequestBody TransactionDto transactionDto) {
-        transactionServiceDb.saveTransaction(transactionMapper.mapToTransaction(transactionDto));
-    }
-
     @GetMapping(value = "saveTransactionFromFactory")
     public void saveTransactionFromFactory(@RequestBody TransactionToProcessDto transactionToProcessDto) {
         transactionServiceDb.saveTransaction(transactionFactory.createTransaction(transactionToProcessDto));
         transactionServiceDb.saveTransactionToUser(transactionToProcessDto);
-    }
-
-    @PutMapping(value = "updateTransaction")
-    public TransactionDto updateTransaction(@RequestBody TransactionDto transactionDto) {
-        return transactionMapper.mapToTransactionDto(transactionServiceDb.saveTransaction(transactionMapper
-                .mapToTransaction(transactionDto)));
     }
 
     @DeleteMapping(value = "deleteTransaction")
