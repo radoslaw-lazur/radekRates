@@ -46,6 +46,7 @@ public class UserControllerTestSuite {
     private User user;
     private UserDto userDto;
     private UserEmailDto userEmailDto;
+    private UserLogInDto userLogInDto;
 
     @Before
     public void init() {
@@ -54,6 +55,7 @@ public class UserControllerTestSuite {
         userDto = new UserDto(1L, "test@test.com","password", "Radoslaw",
                 "Lazur", 30, "Poland", "code", true, false);
         userEmailDto = new UserEmailDto(1L, "test@test.com");
+        userLogInDto = new UserLogInDto(1L, "test@test.com", "password");
     }
 
     @Test
