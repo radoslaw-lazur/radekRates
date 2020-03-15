@@ -1,5 +1,6 @@
 package com.radekrates.controller.repository;
 
+import com.radekrates.domain.User;
 import com.radekrates.domain.dto.user.*;
 import com.radekrates.mapper.UserMapper;
 import com.radekrates.service.UserServiceDb;
@@ -36,17 +37,17 @@ public class UserController {
         return userServiceDb.activateUser(activationCode);
     }
 
-    @GetMapping(value = "blockUser")
+    @PostMapping(value = "blockUser")
     public void blockUser(@RequestBody UserEmailDto userEmailDto) {
         userServiceDb.blockUser(userEmailDto);
     }
 
-    @GetMapping(value = "unblockUser")
+    @PostMapping(value = "unblockUser")
     public void unblockUser(@RequestBody UserEmailDto userEmailDto) {
         userServiceDb.unblockUser(userEmailDto);
     }
 
-    @GetMapping(value = "getDataRelatedToUser")
+    @PostMapping(value = "getDataRelatedToUser")
     public UserLoggedInDto getDataRelatedToUser(@RequestBody UserLogInDto userLogInDto) {
         return userServiceDb.getDataRetaltedToUser(userLogInDto);
     }
@@ -59,6 +60,12 @@ public class UserController {
     @GetMapping(value = "getUser")
     public UserDto getUser(@RequestParam Long userId) {
         return userMapper.mapToUserDto(userServiceDb.getUserById(userId));
+    }
+
+    @PostMapping(value = "validateUser")
+    public UserLogInDto getUserByBody(@RequestBody UserLogInDto userLogInDto) {
+        User user = userServiceDb.getUserByBody(userLogInDto);
+        return new UserLogInDto(1L, user.getEmail(), user.getPassword());
     }
 
     @GetMapping(value = "getUsers")

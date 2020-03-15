@@ -43,6 +43,21 @@ public class IbanServiceDb {
         }
     }
 
+    public Iban updateIban(final Iban iban) {
+        if (ibanRepository.existsByIbanNumber(iban.getIbanNumber())) {
+            Iban ibanToChange = ibanRepository.findByIbanNumber(iban.getIbanNumber()).orElseThrow(IbanNotFoundException::new);
+            ibanToChange.setBankName(iban.getBankName());
+            ibanToChange.setBankLocalisation(iban.getBankLocalisation());
+            ibanToChange.setCountryCode(iban.getCountryCode());
+            ibanToChange.setCurrencyCode(iban.getCurrencyCode());
+            log.info("Iban has been updated in database: " + iban.getIbanNumber());
+            return ibanRepository.save(ibanToChange);
+        } else {
+            log.info("Iban has been not found in database: " + iban.getIbanNumber());
+            throw new IbanNotFoundException();
+        }
+    }
+
     public void saveIbanToUser(final IbanToUserDto ibanToUserDto) {
         User user = userRepository.findByEmail(ibanToUserDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
         Iban iban = ibanRepository.findByIbanNumber(ibanToUserDto.getIban()).orElseThrow(IbanNotFoundException::new);
@@ -58,8 +73,12 @@ public class IbanServiceDb {
 
     public void deleteIbanById(final Long ibanId) {
         if (ibanRepository.findById(ibanId).isPresent()) {
+            Iban iban = ibanRepository.findById(ibanId).orElseThrow(IbanNotFoundException::new);
+            iban.setUser(null);
+            ibanRepository.save(iban);
             ibanRepository.deleteById(ibanId);
             log.info("Iban has been deleted from database - id: " + ibanId);
+
         } else {
             log.info("Iban is not present in database - id: " + ibanId);
             throw new IbanNotFoundException();

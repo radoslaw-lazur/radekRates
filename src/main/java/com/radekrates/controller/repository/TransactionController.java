@@ -27,7 +27,7 @@ public class TransactionController {
         this.transactionFactory = transactionFactory;
     }
 
-    @GetMapping(value = "saveTransactionFromFactory")
+    @PostMapping(value = "saveTransactionFromFactory")
     public void saveTransactionFromFactory(@RequestBody TransactionToProcessDto transactionToProcessDto) {
         transactionServiceDb.saveTransaction(transactionFactory.createTransaction(transactionToProcessDto));
         transactionServiceDb.saveTransactionToUser(transactionToProcessDto);
@@ -48,7 +48,7 @@ public class TransactionController {
         return transactionMapper.mapToTransactionDtoSet(transactionServiceDb.getAllTransactions());
     }
 
-    @GetMapping(value = "getTransactionsRelatedToUser")
+    @PostMapping(value = "getTransactionsRelatedToUser")
     public Set<TransactionDto> getTransactionsRelatedToUser(@RequestBody UserEmailDto userEmailDto) {
         return transactionMapper.mapToTransactionDtoSet(transactionServiceDb.getTransactionsRelatedToUser(userEmailDto));
     }

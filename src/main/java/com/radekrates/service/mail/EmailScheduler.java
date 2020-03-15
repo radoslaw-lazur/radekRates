@@ -31,7 +31,7 @@ public class EmailScheduler {
 
     }
 
-    @Scheduled (fixedDelay = 90000)
+    //@Scheduled (fixedDelay = 90000)
     public void sendScheduledEmail() {
         String currencyMessage = currencyBaseGenerator.generateCurrencyBaseString();
         String weatherMessage = openWeatherGenerator.generateOpenWeatherData();

@@ -61,7 +61,7 @@ public class TransactionRecognizer {
             case "USD-CHF":
                 return adminRatio.getRatioUSD_CHF();
             default:
-                throw new IndexOutOfBoundsException();
+                return new BigDecimal("1");
         }
     }
 }

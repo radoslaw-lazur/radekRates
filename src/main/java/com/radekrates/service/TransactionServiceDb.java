@@ -62,8 +62,13 @@ public class TransactionServiceDb {
 
     public void deleteTransactionById(final Long transactionId) {
         if (transactionRepository.findById(transactionId).isPresent()) {
+            Transaction transaction = transactionRepository.findById(transactionId)
+                    .orElseThrow(TransactionNotFoundException::new);
+            transaction.setUser(null);
+            transactionRepository.save(transaction);
             transactionRepository.deleteById(transactionId);
-            log.info("Transaction has been deleted from database - id: " + transactionId);
+            log.info("Transaction has been deleted from database - id: " + transactionId + "Email: " +
+                    transaction.getUser().getEmail());
         } else {
             log.info("Transaction is not present in database - id: " + transactionId);
         }

@@ -28,14 +28,14 @@ public class IbanController {
         ibanServiceDb.saveIban(ibanMapper.mapToIban(ibanDto));
     }
 
-    @GetMapping(value = "saveIbanToUser")
+    @PostMapping(value = "saveIbanToUser")
     public void saveIbanToUser(@RequestBody IbanToUserDto ibanToUserDto) {
         ibanServiceDb.saveIbanToUser(ibanToUserDto);
     }
 
     @PutMapping(value = "updateIban")
     public IbanDto updateIban(@RequestBody IbanDto ibanDto) {
-        return ibanMapper.mapToIbanDto(ibanServiceDb.saveIban(ibanMapper.mapToIban(ibanDto)));
+        return ibanMapper.mapToIbanDto(ibanServiceDb.updateIban(ibanMapper.mapToIban(ibanDto)));
     }
 
     @DeleteMapping(value = "deleteIban")
@@ -53,7 +53,7 @@ public class IbanController {
         return ibanMapper.mapToIbanDtoSet(ibanServiceDb.getAllIbans());
     }
 
-    @GetMapping(value = "getIbansRelatedToUser")
+    @PostMapping(value = "getIbansRelatedToUser")
     public Set<IbanDto> getIbansRelatedToUser(@RequestBody UserEmailDto userEmailDto) {
         return ibanMapper.mapToIbanDtoSet(ibanServiceDb.getIbansRelatedToUser(userEmailDto));
     }

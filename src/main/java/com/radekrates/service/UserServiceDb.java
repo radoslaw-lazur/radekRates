@@ -57,6 +57,7 @@ public class UserServiceDb {
         }
     }
 
+
     public boolean activateUser(final String activationCode) {
         User user = userRepository.findByActivationCode(activationCode).orElseThrow(UserNotFoundException::new);
         if (user.getActivationCode().equals(activationCode) && !user.isActive()) {
@@ -93,7 +94,6 @@ public class UserServiceDb {
         User user = userRepository.findByEmail(userLogInDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
         if (user.isActive() && !user.isBlocked() && user.getEmail().equals(userLogInDto.getUserEmail())
                 && user.getPassword().equals(userLogInDto.getPassword())) {
-            log.info(user.getEmail() + " has been logged in to the app");
             return new UserLoggedInDto(
                     user.getEmail(),
                     user.getUserFirstName(),
@@ -119,6 +119,11 @@ public class UserServiceDb {
     public User getUserById(final Long userId) {
         log.info("Getting user by id in progress... " + userId);
         return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    }
+
+    public User getUserByBody(final UserLogInDto userLogInDto) {
+        log.info("Getting user to validate in progress... " + userLogInDto.getUserEmail());
+        return userRepository.findByEmail(userLogInDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
     }
 
     public Set<User> getAllUsers() {

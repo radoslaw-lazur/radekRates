@@ -121,7 +121,7 @@ public class IbanControllerTestSuite {
         String jsonContent = new Gson().toJson(userEmailDto);
         when(ibanMapper.mapToIbanDtoSet(ibanServiceDb.getIbansRelatedToUser(userEmailDto))).thenReturn(ibanDtos);
         //When & Then
-        mockMvc.perform(get("/v1/iban/getIbansRelatedToUser")
+        mockMvc.perform(post("/v1/iban/getIbansRelatedToUser")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -155,7 +155,7 @@ public class IbanControllerTestSuite {
         String jsonContent = new Gson().toJson(new IbanToUserDto("test@test.com",
                 "111111111111111111111111111111"));
         //When & Then
-        mockMvc.perform(get("/v1/iban/saveIbanToUser")
+        mockMvc.perform(post("/v1/iban/saveIbanToUser")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))

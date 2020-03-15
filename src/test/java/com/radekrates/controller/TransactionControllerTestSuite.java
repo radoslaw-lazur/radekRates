@@ -159,7 +159,7 @@ public class TransactionControllerTestSuite {
         when(transactionMapper.mapToTransactionDtoSet(transactionServiceDb.getTransactionsRelatedToUser(userEmailDto)))
                 .thenReturn(transactionDtos);
         //When & Then
-        mockMvc.perform(get("/v1/transaction/getTransactionsRelatedToUser")
+        mockMvc.perform(post("/v1/transaction/getTransactionsRelatedToUser")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -184,7 +184,7 @@ public class TransactionControllerTestSuite {
         String jsonContent = new Gson().toJson(transactionToProcessDto);
         doNothing().when(transactionServiceDb).saveTransactionToUser(Mockito.isA(TransactionToProcessDto.class));
         //When & Then
-        mockMvc.perform(get("/v1/transaction/saveTransactionFromFactory")
+        mockMvc.perform(post("/v1/transaction/saveTransactionFromFactory")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))

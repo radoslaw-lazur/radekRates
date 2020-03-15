@@ -164,7 +164,7 @@ public class UserControllerTestSuite {
         doNothing().when(userServiceDb).blockUser(userEmailDto);
         String jsonContent = new Gson().toJson(userEmailDto);
         //When & Then
-        mockMvc.perform(get("/v1/user/blockUser")
+        mockMvc.perform(post("/v1/user/blockUser")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -196,7 +196,7 @@ public class UserControllerTestSuite {
         String jsonContent = new Gson().toJson(userLoggedInDto);
         when(userServiceDb.getDataRetaltedToUser(Mockito.isA(UserLogInDto.class))).thenReturn(userLoggedInDto);
         //When & Then
-        mockMvc.perform(get("/v1/user/getDataRelatedToUser")
+        mockMvc.perform(post("/v1/user/getDataRelatedToUser")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -233,7 +233,7 @@ public class UserControllerTestSuite {
         doNothing().when(userServiceDb).unblockUser(userEmailDto);
         String jsonContent = new Gson().toJson(userEmailDto);
         //When & Then
-        mockMvc.perform(get("/v1/user/unblockUser")
+        mockMvc.perform(post("/v1/user/unblockUser")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
