@@ -1,8 +1,6 @@
 package com.radekrates.controller.repository;
 
-import com.radekrates.api.datafixerio.client.DataFixerClient;
 import com.radekrates.domain.dto.adminratio.AdminRatioDto;
-import com.radekrates.domain.dto.datafixerio.DataFixerDto;
 import com.radekrates.mapper.AdminRatioMapper;
 import com.radekrates.service.AdminRatioServiceDb;
 import lombok.extern.slf4j.Slf4j;

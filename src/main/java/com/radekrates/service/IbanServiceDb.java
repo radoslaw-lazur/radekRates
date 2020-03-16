@@ -78,7 +78,6 @@ public class IbanServiceDb {
             ibanRepository.save(iban);
             ibanRepository.deleteById(ibanId);
             log.info("Iban has been deleted from database - id: " + ibanId);
-
         } else {
             log.info("Iban is not present in database - id: " + ibanId);
             throw new IbanNotFoundException();
@@ -103,9 +102,5 @@ public class IbanServiceDb {
 
     public void deleteAllIbans() {
         ibanRepository.deleteAll();
-    }
-
-    public long countAll() {
-        return ibanRepository.count();
     }
 }

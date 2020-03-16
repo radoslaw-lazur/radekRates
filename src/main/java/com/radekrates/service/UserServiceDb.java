@@ -123,19 +123,20 @@ public class UserServiceDb {
 
     public User getUserByBody(final UserLogInDto userLogInDto) {
         log.info("Getting user to validate in progress... " + userLogInDto.getUserEmail());
-        return userRepository.findByEmail(userLogInDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
+        if (userRepository.existsByEmailAndPassword(userLogInDto.getUserEmail(), userLogInDto.getPassword())) {
+            log.info(userLogInDto.getUserEmail() + " is validated");
+            return userRepository.findByEmail(userLogInDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
+        } else {
+            log.info(userLogInDto.getUserEmail() + " is not validated");
+            throw new UserDataConflictException();
+        }
     }
 
     public Set<User> getAllUsers() {
-        log.info("Getting users in progress...");
         return userRepository.findAll();
     }
 
     public void deleteAllUsers() {
         userRepository.deleteAll();
-    }
-
-    public long countAll() {
-        return userRepository.count();
     }
 }

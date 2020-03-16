@@ -93,9 +93,4 @@ public class TransactionServiceDb {
     public void deleteAllTransactions() {
         transactionRepository.deleteAll();
     }
-
-    public long countAll() {
-        return transactionRepository.count();
-    }
-
 }
