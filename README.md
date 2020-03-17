@@ -43,6 +43,8 @@ This is a Java app which uses Gradle build. The project has been made based on S
 The project is covered with tests using Junit, Mockito, and SpringBootTest. 
 This project was created using InteliJ Idea IDE.
 
+Check the Swagger UI endpoint!
+
 ## Start-up / Launch
 
 To start-up the application the repository needs to be cloned. When cloned, build the project using 'gradlew build' terminal command. 
