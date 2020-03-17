@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,4 +23,7 @@ public class Log {
     @NotNull
     @Column(name = "LOG_INFO")
     private String logInfo;
+    @NotNull
+    @Column(name = "LOG_DATE")
+    private LocalDateTime localDateTime;
 }
