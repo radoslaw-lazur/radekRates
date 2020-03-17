@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 public class LogDto {
     private Long id;
+    private String userEmail;
     private String logInfo;
     private LocalDateTime localDateTime;
 }
