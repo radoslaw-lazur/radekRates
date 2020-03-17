@@ -35,7 +35,7 @@ public class AdminController {
     }
 
     @DeleteMapping(value = "/ratios")
-    public void deleteAllFalseRatios() {
+    public void deleteAllRatios() {
         adminRatioServiceDb.deleteAll();
     }
 }

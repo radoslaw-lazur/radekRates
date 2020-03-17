@@ -23,5 +23,4 @@ public class LogServiceDb {
     public Set<Log> getAllLogs() {
         return logRepository.findAll();
     }
-
 }
