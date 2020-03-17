@@ -50,7 +50,7 @@ public class LogControllerTestSuite {
         Set<LogDto> logDtos = new HashSet<>();
         when(logMapper.mapToLogDtoSet(logServiceDb.getAllLogs())).thenReturn(logDtos);
         //When & Then
-        mockMvc.perform(get("/v1/logs/getLogs")
+        mockMvc.perform(get("/v1/logs")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
@@ -63,7 +63,7 @@ public class LogControllerTestSuite {
         logDtos.add(logDto);
         when(logMapper.mapToLogDtoSet(logServiceDb.getAllLogs())).thenReturn(logDtos);
         //When & Then
-        mockMvc.perform(get("/v1/logs/getLogs")
+        mockMvc.perform(get("/v1/logs")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))

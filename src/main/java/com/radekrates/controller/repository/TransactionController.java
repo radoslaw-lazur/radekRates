@@ -13,7 +13,7 @@ import java.util.Set;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/v1/transaction")
+@RequestMapping("/v1")
 public class TransactionController {
     private TransactionMapper transactionMapper;
     private TransactionServiceDb transactionServiceDb;
@@ -27,33 +27,33 @@ public class TransactionController {
         this.transactionFactory = transactionFactory;
     }
 
-    @PostMapping(value = "saveTransactionFromFactory")
+    @PostMapping(value = "/transactions")
     public void saveTransactionFromFactory(@RequestBody TransactionToProcessDto transactionToProcessDto) {
         transactionServiceDb.saveTransaction(transactionFactory.createTransaction(transactionToProcessDto));
         transactionServiceDb.saveTransactionToUser(transactionToProcessDto);
     }
 
-    @DeleteMapping(value = "deleteTransaction")
-    public void deleteTransaction(@RequestParam Long transactionId) {
-        transactionServiceDb.deleteTransactionById(transactionId);
-    }
-
-    @GetMapping(value = "getTransaction")
-    public TransactionDto getTransaction(@RequestParam Long transactionId) {
-        return transactionMapper.mapToTransactionDto(transactionServiceDb.getTransactionById(transactionId));
-    }
-
-    @GetMapping(value = "getTransactions")
-    public Set<TransactionDto> getTransactions() {
-        return transactionMapper.mapToTransactionDtoSet(transactionServiceDb.getAllTransactions());
-    }
-
-    @PostMapping(value = "getTransactionsRelatedToUser")
+    @PostMapping(value = "/transactionsUser")
     public Set<TransactionDto> getTransactionsRelatedToUser(@RequestBody UserEmailDto userEmailDto) {
         return transactionMapper.mapToTransactionDtoSet(transactionServiceDb.getTransactionsRelatedToUser(userEmailDto));
     }
 
-    @DeleteMapping(value = "deleteAllTransactions")
+    @GetMapping(value = "/transactions/{transactionId}")
+    public TransactionDto getTransaction(@PathVariable Long transactionId) {
+        return transactionMapper.mapToTransactionDto(transactionServiceDb.getTransactionById(transactionId));
+    }
+
+    @GetMapping(value = "/transactions")
+    public Set<TransactionDto> getTransactions() {
+        return transactionMapper.mapToTransactionDtoSet(transactionServiceDb.getAllTransactions());
+    }
+
+    @DeleteMapping(value = "/transactions/{transactionId}")
+    public void deleteTransaction(@PathVariable Long transactionId) {
+        transactionServiceDb.deleteTransactionById(transactionId);
+    }
+
+    @DeleteMapping(value = "/transactions")
     public void deleteAllTransactions() {
         transactionServiceDb.deleteAllTransactions();
     }

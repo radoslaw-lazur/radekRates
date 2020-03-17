@@ -12,7 +12,7 @@ import java.util.Set;
 @Slf4j
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/v1/admin")
+@RequestMapping("/v1")
 public class AdminController {
     private AdminRatioServiceDb adminRatioServiceDb;
     private AdminRatioMapper adminRatioMapper;
@@ -24,17 +24,17 @@ public class AdminController {
         this.adminRatioMapper = adminRatioMapper;
     }
 
-    @PostMapping(value = "saveRatios")
+    @PostMapping(value = "/ratios")
     public void saveRatios(@RequestBody AdminRatioDto adminRatioDto) {
         adminRatioServiceDb.saveAdminRatio(adminRatioMapper.mapToAdminRatio(adminRatioDto));
     }
 
-    @GetMapping(value = "getRatios")
+    @GetMapping(value = "/ratios")
     public Set<AdminRatioDto> getRatios() {
         return adminRatioMapper.mapToAdminRatioDtoSet(adminRatioServiceDb.getRatios());
     }
 
-    @DeleteMapping(value = "deleteAllRatios")
+    @DeleteMapping(value = "/ratios")
     public void deleteAllFalseRatios() {
         adminRatioServiceDb.deleteAll();
     }

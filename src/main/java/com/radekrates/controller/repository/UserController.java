@@ -1,6 +1,5 @@
 package com.radekrates.controller.repository;
 
-import com.radekrates.domain.User;
 import com.radekrates.domain.dto.user.*;
 import com.radekrates.mapper.UserMapper;
 import com.radekrates.service.UserServiceDb;
@@ -11,7 +10,7 @@ import java.util.Set;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/v1/user")
+@RequestMapping("/v1")
 public class UserController {
     private UserMapper userMapper;
     private UserServiceDb userServiceDb;
@@ -22,58 +21,62 @@ public class UserController {
         this.userServiceDb = userServiceDb;
     }
 
-    @PostMapping(value = "saveUser")
+    @PostMapping(value = "/users")
     public void saveUser(@RequestBody UserDto userDto) {
         userServiceDb.saveUser(userMapper.mapToUser(userDto));
     }
 
-    @PutMapping(value = "updateUser")
-    public UserDto updateUser(@RequestBody UserDto userDto) {
-        return userMapper.mapToUserDto(userServiceDb.saveUser(userMapper.mapToUser(userDto)));
-    }
-
-    @GetMapping(value = "activateUser")
-    public boolean activateUser(@RequestParam String activationCode) {
-        return userServiceDb.activateUser(activationCode);
-    }
-
-    @PostMapping(value = "blockUser")
+    @PostMapping(value = "/block")
     public void blockUser(@RequestBody UserEmailDto userEmailDto) {
         userServiceDb.blockUser(userEmailDto);
     }
 
-    @PostMapping(value = "unblockUser")
+    @PostMapping(value = "/unblock")
     public void unblockUser(@RequestBody UserEmailDto userEmailDto) {
         userServiceDb.unblockUser(userEmailDto);
     }
 
-    @PostMapping(value = "getDataRelatedToUser")
+    @PostMapping(value = "/validate")
+    public UserLogInDto getUserByBody(@RequestBody UserLogInDto userLogInDto) {
+        return userServiceDb.getUserByBody(userLogInDto);
+    }
+
+    @PostMapping(value = "/dataUser")
     public UserLoggedInDto getDataRelatedToUser(@RequestBody UserLogInDto userLogInDto) {
-        return userServiceDb.getDataRetaltedToUser(userLogInDto);
+        return userServiceDb.getDataRelatedToUser(userLogInDto);
     }
 
-    @DeleteMapping(value = "deleteUser")
-    public void deleteUser(@RequestParam Long userId) {
-        userServiceDb.deleteUserById(userId);
+    @PostMapping(value = "/password")
+    public void remindPassword(@RequestBody UserEmailDto userEmailDto) {
+        userServiceDb.getUserPassword(userEmailDto.getUserEmail());
     }
 
-    @GetMapping(value = "getUser")
-    public UserDto getUser(@RequestParam Long userId) {
+    @PutMapping(value = "/users")
+    public UserDto updateUser(@RequestBody UserDto userDto) {
+        return userMapper.mapToUserDto(userServiceDb.saveUser(userMapper.mapToUser(userDto)));
+    }
+
+    @GetMapping(value = "/activate/{activationCode}")
+    public boolean activateUser(@PathVariable String activationCode) {
+        return userServiceDb.activateUser(activationCode);
+    }
+
+    @GetMapping(value = "/users/{userId}")
+    public UserDto getUser(@PathVariable Long userId) {
         return userMapper.mapToUserDto(userServiceDb.getUserById(userId));
     }
 
-    @PostMapping(value = "validateUser")
-    public UserLogInDto getUserByBody(@RequestBody UserLogInDto userLogInDto) {
-        User user = userServiceDb.getUserByBody(userLogInDto);
-        return new UserLogInDto(1L, user.getEmail(), user.getPassword());
-    }
-
-    @GetMapping(value = "getUsers")
+    @GetMapping(value = "/users")
     public Set<UserDto> getUsers() {
         return userMapper.mapToUserDtoSet(userServiceDb.getAllUsers());
     }
 
-    @DeleteMapping(value = "deleteAllUsers")
+    @DeleteMapping(value = "/users/{userId}")
+    public void deleteUser(@PathVariable Long userId) {
+        userServiceDb.deleteUserById(userId);
+    }
+
+    @DeleteMapping(value = "/users")
     public void deleteAllUsers() {
         userServiceDb.deleteAllUsers();
     }

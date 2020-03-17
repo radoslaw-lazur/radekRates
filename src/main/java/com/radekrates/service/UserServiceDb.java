@@ -29,7 +29,7 @@ public class UserServiceDb {
     private IbanMapper ibanMapper;
     private TransactionMapper transactionMapper;
     private UserValidator userValidator;
-    private static final String ACTIVATION_LINK = "http://localhost:8080/v1/user/activateUser?activationCode=";
+    private static final String ACTIVATION_LINK = "http://localhost:8080/v1/activate/";
 
     @Autowired
     public UserServiceDb(UserRepository userRepository, EmailService emailService, UniqueStringChainGenerator generator,
@@ -70,6 +70,16 @@ public class UserServiceDb {
         }
     }
 
+    public void getUserPassword(final String userEmail) {
+        User user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
+        if (!user.isBlocked() && user.isActive()) {
+            emailService.sendForgottenPassword(new Mail(userEmail, user.getUserFirstName() +
+                    ", here is your forgotten password", ""), user);
+        } else {
+            throw  new UserDataConflictException();
+        }
+    }
+
     public void blockUser(final UserEmailDto userEmailDto) {
         User user = userRepository.findByEmail(userEmailDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
         if (user.isActive() && !user.isBlocked() && user.getEmail().equals(userEmailDto.getUserEmail())) {
@@ -90,7 +100,7 @@ public class UserServiceDb {
         }
     }
 
-    public UserLoggedInDto getDataRetaltedToUser(final UserLogInDto userLogInDto) {
+    public UserLoggedInDto getDataRelatedToUser(final UserLogInDto userLogInDto) {
         User user = userRepository.findByEmail(userLogInDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
         if (user.isActive() && !user.isBlocked() && user.getEmail().equals(userLogInDto.getUserEmail())
                 && user.getPassword().equals(userLogInDto.getPassword())) {
@@ -121,11 +131,12 @@ public class UserServiceDb {
         return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 
-    public User getUserByBody(final UserLogInDto userLogInDto) {
+    public UserLogInDto getUserByBody(final UserLogInDto userLogInDto) {
         log.info("Getting user to validate in progress... " + userLogInDto.getUserEmail());
         if (userRepository.existsByEmailAndPassword(userLogInDto.getUserEmail(), userLogInDto.getPassword())) {
             log.info(userLogInDto.getUserEmail() + " is validated");
-            return userRepository.findByEmail(userLogInDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
+            User user = userRepository.findByEmail(userLogInDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
+            return new UserLogInDto(1L, user.getEmail(), user.getPassword());
         } else {
             log.info(userLogInDto.getUserEmail() + " is not validated");
             throw new UserDataConflictException();

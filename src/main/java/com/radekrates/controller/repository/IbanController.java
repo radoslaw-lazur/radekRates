@@ -12,7 +12,7 @@ import java.util.Set;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/v1/iban")
+@RequestMapping("/v1")
 public class IbanController {
     private IbanMapper ibanMapper;
     private IbanServiceDb ibanServiceDb;
@@ -23,42 +23,42 @@ public class IbanController {
         this.ibanServiceDb = ibanServiceDb;
     }
 
-    @PostMapping(value = "saveIban")
+    @PostMapping(value = "/ibans")
     public void saveIban(@RequestBody IbanDto ibanDto) {
         ibanServiceDb.saveIban(ibanMapper.mapToIban(ibanDto));
     }
 
-    @PostMapping(value = "saveIbanToUser")
+    @PostMapping(value = "/ibanToUser")
     public void saveIbanToUser(@RequestBody IbanToUserDto ibanToUserDto) {
         ibanServiceDb.saveIbanToUser(ibanToUserDto);
     }
 
-    @PutMapping(value = "updateIban")
-    public IbanDto updateIban(@RequestBody IbanDto ibanDto) {
-        return ibanMapper.mapToIbanDto(ibanServiceDb.updateIban(ibanMapper.mapToIban(ibanDto)));
-    }
-
-    @DeleteMapping(value = "deleteIban")
-    public void deleteIban(@RequestParam Long ibanId) {
-        ibanServiceDb.deleteIbanById(ibanId);
-    }
-
-    @GetMapping(value = "getIban")
-    public IbanDto getIban(@RequestParam Long ibanId) {
-        return ibanMapper.mapToIbanDto(ibanServiceDb.getIbanById(ibanId));
-    }
-
-    @GetMapping(value = "getIbans") 
-    public Set<IbanDto> getIbans() {
-        return ibanMapper.mapToIbanDtoSet(ibanServiceDb.getAllIbans());
-    }
-
-    @PostMapping(value = "getIbansRelatedToUser")
+    @PostMapping(value = "/ibansUser")
     public Set<IbanDto> getIbansRelatedToUser(@RequestBody UserEmailDto userEmailDto) {
         return ibanMapper.mapToIbanDtoSet(ibanServiceDb.getIbansRelatedToUser(userEmailDto));
     }
 
-    @DeleteMapping(value = "deleteAllIbans")
+    @PutMapping(value = "/ibans")
+    public IbanDto updateIban(@RequestBody IbanDto ibanDto) {
+        return ibanMapper.mapToIbanDto(ibanServiceDb.updateIban(ibanMapper.mapToIban(ibanDto)));
+    }
+
+    @GetMapping(value = "/ibans/{ibanId}")
+    public IbanDto getIban(@PathVariable Long ibanId) {
+        return ibanMapper.mapToIbanDto(ibanServiceDb.getIbanById(ibanId));
+    }
+
+    @GetMapping(value = "/ibans")
+    public Set<IbanDto> getIbans() {
+        return ibanMapper.mapToIbanDtoSet(ibanServiceDb.getAllIbans());
+    }
+
+    @DeleteMapping(value = "/ibans/{ibanId}")
+    public void deleteIban(@PathVariable Long ibanId) {
+        ibanServiceDb.deleteIbanById(ibanId);
+    }
+
+    @DeleteMapping(value = "/ibans")
     public void deleteAllIbans() {
         ibanServiceDb.deleteAllIbans();
     }

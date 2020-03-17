@@ -26,7 +26,7 @@ public class AdminRatioServiceDb {
         this.transactionFactory = transactionFactory;
     }
 
-    public AdminRatio saveAdminRatio(final AdminRatio adminRatio) {
+    public void saveAdminRatio(final AdminRatio adminRatio) {
         String generatedKey = generatorKey.createUniqueStringChain();
         transactionFactory.setTemporaryAdminKey(generatedKey);
         adminRatio.setKey(generatedKey);
@@ -35,7 +35,7 @@ public class AdminRatioServiceDb {
         Set<AdminRatio> adminRatiosSet = adminRatioRepository.findAll();
         adminRatiosSet.forEach(i -> i.setActive(false));
         log.info("Ratios have been saved in database: " + LocalDate.now() + " key: " + generatedKey);
-       return adminRatioRepository.save(adminRatio);
+        adminRatioRepository.save(adminRatio);
     }
 
     public Set<AdminRatio> getRatios() {
