@@ -9,7 +9,7 @@
 **This is the backend side of the application**  
 *To check out the frontend side of the application click the link shown below:*  
 
-[Radek Rates App Frontend Vaadin](https://github.com/radoslaw-lazur/radekRatesFrontVaadin)  
+[RadekRates App Frontend Vaadin](https://github.com/radoslaw-lazur/radekRatesFrontVaadin)  
   
 ## Description
 
