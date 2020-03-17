@@ -12,4 +12,6 @@ public interface LogRepository extends CrudRepository<Log, Long> {
     Log save(Log log);
     @Override
     Set<Log> findAll();
+    @Override
+    void deleteAll();
 }
