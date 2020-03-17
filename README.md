@@ -56,7 +56,7 @@ Below you can find also starting package you can import to your REST app as Inso
 
 [Import HTTP requests to Insomnia](https://drive.google.com/drive/folders/1enXQa5ovWKFmjkGJBqzuRmqBPypgym2W?usp=sharing)
 
-[Import HTTP request to Postman](https://www.getpostman.com/collections/d99444aae4a04e7ef4fb)
+[Import HTTP requests to Postman](https://www.getpostman.com/collections/d99444aae4a04e7ef4fb)
 
 The app starts on localhost:8080 - Tomcat
 
