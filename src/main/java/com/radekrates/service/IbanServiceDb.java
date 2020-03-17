@@ -1,6 +1,7 @@
 package com.radekrates.service;
 
 import com.radekrates.domain.Iban;
+import com.radekrates.domain.Log;
 import com.radekrates.domain.User;
 import com.radekrates.domain.dto.iban.IbanToUserDto;
 import com.radekrates.domain.dto.user.UserEmailDto;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Slf4j
@@ -24,12 +26,15 @@ public class IbanServiceDb {
     private IbanRepository ibanRepository;
     private UserRepository userRepository;
     private IbanValidator ibanValidator;
+    private LogServiceDb logServiceDb;
 
     @Autowired
-    public IbanServiceDb(IbanRepository ibanRepository, UserRepository userRepository, IbanValidator ibanValidator) {
+    public IbanServiceDb(IbanRepository ibanRepository, UserRepository userRepository, IbanValidator ibanValidator,
+                         LogServiceDb logServiceDb) {
         this.ibanRepository = ibanRepository;
         this.userRepository = userRepository;
         this.ibanValidator = ibanValidator;
+        this.logServiceDb = logServiceDb;
     }
 
     public Iban saveIban(final Iban iban) {
@@ -65,6 +70,7 @@ public class IbanServiceDb {
             user.getIbans().add(iban);
             iban.setUser(user);
             userRepository.save(user);
+            logServiceDb.saveLog(new Log(user.getEmail(), iban.getIbanNumber() + " is linked", LocalDateTime.now()));
             log.info("Iban " + ibanToUserDto.getIban() + " has been linked to " + ibanToUserDto.getUserEmail());
         } else {
             throw new IbanToUserConflictException();

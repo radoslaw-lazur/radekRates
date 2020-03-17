@@ -1,5 +1,6 @@
 package com.radekrates.service;
 
+import com.radekrates.domain.Log;
 import com.radekrates.domain.Mail;
 import com.radekrates.domain.User;
 import com.radekrates.domain.dto.user.UserEmailDto;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Slf4j
@@ -29,17 +31,20 @@ public class UserServiceDb {
     private IbanMapper ibanMapper;
     private TransactionMapper transactionMapper;
     private UserValidator userValidator;
+    private LogServiceDb logServiceDb;
     private static final String ACTIVATION_LINK = "http://localhost:8080/v1/activate/";
 
     @Autowired
     public UserServiceDb(UserRepository userRepository, EmailService emailService, UniqueStringChainGenerator generator,
-                         IbanMapper ibanMapper, TransactionMapper transactionMapper, UserValidator userValidator) {
+                         IbanMapper ibanMapper, TransactionMapper transactionMapper, UserValidator userValidator,
+                         LogServiceDb logServiceDb) {
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.generator = generator;
         this.ibanMapper = ibanMapper;
         this.transactionMapper = transactionMapper;
         this.userValidator = userValidator;
+        this.logServiceDb = logServiceDb;
     }
 
     public User saveUser(final User user) {
@@ -50,6 +55,7 @@ public class UserServiceDb {
         } else {
             String activationCode = generator.createUniqueStringChain();
             user.setActivationCode(activationCode);
+            logServiceDb.saveLog(new Log(user.getEmail(), "Saved in database", LocalDateTime.now()));
             log.info("User has been saved in database: " + user.getEmail());
             emailService.sendActivationLink(new Mail(user.getEmail(), "Dear " + user.getUserFirstName() +
                     ", here is your activation link", ACTIVATION_LINK + activationCode), user);
@@ -63,6 +69,7 @@ public class UserServiceDb {
         if (user.getActivationCode().equals(activationCode) && !user.isActive()) {
             user.setActive(true);
             userRepository.save(user);
+            logServiceDb.saveLog(new Log(user.getEmail(), "Activation", LocalDateTime.now()));
             log.info(user.getEmail() + " has been activated");
             return true;
         } else {
@@ -73,6 +80,7 @@ public class UserServiceDb {
     public void getUserPassword(final String userEmail) {
         User user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
         if (!user.isBlocked() && user.isActive()) {
+            logServiceDb.saveLog(new Log(user.getEmail(), "Forgot password", LocalDateTime.now()));
             emailService.sendForgottenPassword(new Mail(userEmail, user.getUserFirstName() +
                     ", here is your forgotten password", ""), user);
         } else {
@@ -84,6 +92,7 @@ public class UserServiceDb {
         User user = userRepository.findByEmail(userEmailDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
         if (user.isActive() && !user.isBlocked() && user.getEmail().equals(userEmailDto.getUserEmail())) {
             user.setBlocked(true);
+            logServiceDb.saveLog(new Log(user.getEmail(), "Blocked", LocalDateTime.now()));
             log.info(user.getEmail() + " has been blocked");
         } else {
             throw new UserDataConflictException();
@@ -94,6 +103,7 @@ public class UserServiceDb {
         User user = userRepository.findByEmail(userEmailDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
         if (user.isActive() && user.isBlocked() && user.getEmail().equals(userEmailDto.getUserEmail())) {
             user.setBlocked(false);
+            logServiceDb.saveLog(new Log(user.getEmail(), "Unblocked", LocalDateTime.now()));
             log.info(user.getEmail() + " has been unblocked");
         } else {
             throw new UserDataConflictException();
@@ -134,10 +144,12 @@ public class UserServiceDb {
     public UserLogInDto getUserByBody(final UserLogInDto userLogInDto) {
         log.info("Getting user to validate in progress... " + userLogInDto.getUserEmail());
         if (userRepository.existsByEmailAndPassword(userLogInDto.getUserEmail(), userLogInDto.getPassword())) {
+            logServiceDb.saveLog(new Log(userLogInDto.getUserEmail(), "Logged in", LocalDateTime.now()));
             log.info(userLogInDto.getUserEmail() + " is validated");
             User user = userRepository.findByEmail(userLogInDto.getUserEmail()).orElseThrow(UserNotFoundException::new);
             return new UserLogInDto(1L, user.getEmail(), user.getPassword());
         } else {
+            logServiceDb.saveLog(new Log(userLogInDto.getUserEmail(), "Logging in denied", LocalDateTime.now()));
             log.info(userLogInDto.getUserEmail() + " is not validated");
             throw new UserDataConflictException();
         }
