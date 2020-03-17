@@ -72,7 +72,7 @@ public class IbanControllerTestSuite {
         Set<IbanDto> ibanDtos = new HashSet<>();
         when(ibanMapper.mapToIbanDtoSet(ibanServiceDb.getAllIbans())).thenReturn(ibanDtos);
         //When & Then
-        mockMvc.perform(get("/v1/iban/getIbans")
+        mockMvc.perform(get("/v1/ibans")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
@@ -85,7 +85,7 @@ public class IbanControllerTestSuite {
         ibanDtos.add(ibanDto);
         when(ibanMapper.mapToIbanDtoSet(ibanServiceDb.getAllIbans())).thenReturn(ibanDtos);
         //When & Then
-        mockMvc.perform(get("/v1/iban/getIbans")
+        mockMvc.perform(get("/v1/ibans")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -103,7 +103,7 @@ public class IbanControllerTestSuite {
         Long ibanId = ibanDto.getId();
         when(ibanMapper.mapToIbanDto(ibanServiceDb.getIbanById(ibanId))).thenReturn(ibanDto);
         //When & Then
-        mockMvc.perform(get("/v1/iban/getIban?ibanId=1")
+        mockMvc.perform(get("/v1/ibans/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.bankName", is("bankName")))
@@ -121,7 +121,7 @@ public class IbanControllerTestSuite {
         String jsonContent = new Gson().toJson(userEmailDto);
         when(ibanMapper.mapToIbanDtoSet(ibanServiceDb.getIbansRelatedToUser(userEmailDto))).thenReturn(ibanDtos);
         //When & Then
-        mockMvc.perform(post("/v1/iban/getIbansRelatedToUser")
+        mockMvc.perform(post("/v1/ibansUser")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -141,7 +141,7 @@ public class IbanControllerTestSuite {
         String jsonContent = new Gson().toJson(ibanDto);
         when(ibanServiceDb.saveIban(ibanMapper.mapToIban(ibanDto))).thenReturn(iban);
         //When & Then
-        mockMvc.perform(post("/v1/iban/saveIban")
+        mockMvc.perform(post("/v1/ibans")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -155,7 +155,7 @@ public class IbanControllerTestSuite {
         String jsonContent = new Gson().toJson(new IbanToUserDto("test@test.com",
                 "111111111111111111111111111111"));
         //When & Then
-        mockMvc.perform(post("/v1/iban/saveIbanToUser")
+        mockMvc.perform(post("/v1/ibanToUser")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -168,7 +168,7 @@ public class IbanControllerTestSuite {
         when(ibanMapper.mapToIbanDto(ibanServiceDb.saveIban(ibanMapper.mapToIban(ibanDto)))).thenReturn(ibanDto);
         String jsonContent = new Gson().toJson(ibanDto);
         //When & Then
-        mockMvc.perform(put("/v1/iban/updateIban")
+        mockMvc.perform(put("/v1/ibans")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -187,7 +187,7 @@ public class IbanControllerTestSuite {
         IbanServiceDb ibanServiceDb = mock(IbanServiceDb.class);
         doNothing().when(ibanServiceDb).deleteAllIbans();
         //When & Then
-        mockMvc.perform(delete("/v1/iban/deleteAllIbans")
+        mockMvc.perform(delete("/v1/ibans")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -199,7 +199,7 @@ public class IbanControllerTestSuite {
         IbanServiceDb ibanServiceDb = mock(IbanServiceDb.class);
         doNothing().when(ibanServiceDb).deleteIbanById(ibanId);
         //When & Then
-        mockMvc.perform(delete("/v1/iban/deleteIban?ibanId=1")
+        mockMvc.perform(delete("/v1/ibans/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

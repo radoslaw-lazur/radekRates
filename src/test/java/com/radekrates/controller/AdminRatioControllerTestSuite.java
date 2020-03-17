@@ -1,7 +1,5 @@
 package com.radekrates.controller;
 
-import com.google.gson.Gson;
-import com.radekrates.api.datafixerio.client.DataFixerClient;
 import com.radekrates.controller.repository.AdminController;
 import com.radekrates.domain.AdminRatio;
 import com.radekrates.domain.dto.adminratio.AdminRatioDto;
@@ -38,12 +36,11 @@ public class AdminRatioControllerTestSuite {
     private AdminRatioServiceDb adminRatioServiceDb;
     @MockBean
     private AdminRatioMapper adminRatioMapper;
-    private AdminRatio adminRatio;
     private AdminRatioDto adminRatioDto;
 
     @Before
     public void init() {
-        adminRatio = new AdminRatio(
+        AdminRatio adminRatio = new AdminRatio(
                 1L,
                 "123456789",
                 LocalDate.of(2020, 3, 1),
@@ -103,7 +100,7 @@ public class AdminRatioControllerTestSuite {
         Set<AdminRatioDto> adminRatioDtos = new HashSet<>();
         when(adminRatioMapper.mapToAdminRatioDtoSet(adminRatioServiceDb.getRatios())).thenReturn(adminRatioDtos);
         //When & Then
-        mockMvc.perform(get("/v1/admin/getRatios")
+        mockMvc.perform(get("/v1/ratios")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
@@ -116,7 +113,7 @@ public class AdminRatioControllerTestSuite {
         adminRatioDtos.add(adminRatioDto);
         when(adminRatioMapper.mapToAdminRatioDtoSet(adminRatioServiceDb.getRatios())).thenReturn(adminRatioDtos);
         //When & Then
-        mockMvc.perform(get("/v1/admin/getRatios")
+        mockMvc.perform(get("/v1/ratios")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -153,7 +150,7 @@ public class AdminRatioControllerTestSuite {
         AdminRatioServiceDb adminRatioServiceDb = mock(AdminRatioServiceDb.class);
         doNothing().when(adminRatioServiceDb).deleteAll();
         //When & Then
-        mockMvc.perform(delete("/v1/admin/deleteAllRatios")
+        mockMvc.perform(delete("/v1/ratios")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

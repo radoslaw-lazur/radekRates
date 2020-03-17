@@ -2,11 +2,13 @@ package com.radekrates.domain.dto.adminratio;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class AdminRatioDto {
     private Long id;

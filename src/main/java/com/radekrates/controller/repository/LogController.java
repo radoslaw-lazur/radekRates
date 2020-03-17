@@ -14,7 +14,7 @@ import java.util.Set;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/v1/logs")
+@RequestMapping("/v1")
 public class LogController {
     private LogServiceDb logServiceDb;
     private LogMapper logMapper;
@@ -25,7 +25,7 @@ public class LogController {
         this.logMapper = logMapper;
     }
 
-    @GetMapping(value = "getLogs")
+    @GetMapping(value = "/logs")
     public Set<LogDto> getLogs() {
         return logMapper.mapToLogDtoSet(logServiceDb.getAllLogs());
     }

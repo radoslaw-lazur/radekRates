@@ -18,7 +18,6 @@ public class MailCreatorService {
     private TemplateEngine templateEngine;
     private Context context;
 
-
     @Autowired
     public MailCreatorService(AdminConfig adminConfig, CompanyDetails companyDetails, TemplateEngine templateEngine) {
         this.adminConfig = adminConfig;
@@ -41,7 +40,7 @@ public class MailCreatorService {
         return templateEngine.process("mail/transaction_email", context);
     }
 
-    public String buildSignInNotificationEmail(String message, User user) {
+    public String buildSignInNotificationEmail(final String message, final User user) {
         context = new Context();
         context.setVariable("message", message);
         makeSharedDataContext(user);
@@ -53,6 +52,14 @@ public class MailCreatorService {
         context.setVariable("currencyData", message);
         context.setVariable("weatherData", weatherData);
         return templateEngine.process("mail/scheduled_mail_currency_weather", context);
+    }
+
+    public String buildForgottenPasswordEmail(final User user) {
+        context = new Context();
+        context.setVariable("dear", "Dear ");
+        context.setVariable("userFirstName", user.getUserFirstName());
+        context.setVariable("forgottenPassword", user.getPassword());
+        return templateEngine.process("mail/forgotten_password_mail", context);
     }
 
     private void makeSharedDataContext(User user) {

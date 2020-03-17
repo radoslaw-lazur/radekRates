@@ -97,7 +97,7 @@ public class TransactionControllerTestSuite {
         Set<TransactionDto> transactionDtos = new HashSet<>();
         when(transactionMapper.mapToTransactionDtoSet(transactionServiceDb.getAllTransactions())).thenReturn(transactionDtos);
         //When & Then
-        mockMvc.perform(get("/v1/transaction/getTransactions")
+        mockMvc.perform(get("/v1/transactions")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
@@ -110,7 +110,7 @@ public class TransactionControllerTestSuite {
         transactionDtos.add(transactionDto);
         when(transactionMapper.mapToTransactionDtoSet(transactionServiceDb.getAllTransactions())).thenReturn(transactionDtos);
         //When & Then
-        mockMvc.perform(get("/v1/transaction/getTransactions")
+        mockMvc.perform(get("/v1/transactions")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -134,7 +134,7 @@ public class TransactionControllerTestSuite {
         Long transactionId = transactionDto.getId();
         when(transactionMapper.mapToTransactionDto(transactionServiceDb.getTransactionById(transactionId))).thenReturn(transactionDto);
         //When & Then
-        mockMvc.perform(get("/v1/transaction/getTransaction?transactionId=1")
+        mockMvc.perform(get("/v1/transactions/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.uniqueKeyChain", is("aaaa")))
@@ -159,7 +159,7 @@ public class TransactionControllerTestSuite {
         when(transactionMapper.mapToTransactionDtoSet(transactionServiceDb.getTransactionsRelatedToUser(userEmailDto)))
                 .thenReturn(transactionDtos);
         //When & Then
-        mockMvc.perform(post("/v1/transaction/getTransactionsRelatedToUser")
+        mockMvc.perform(post("/v1/transactionsUser")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -184,7 +184,7 @@ public class TransactionControllerTestSuite {
         String jsonContent = new Gson().toJson(transactionToProcessDto);
         doNothing().when(transactionServiceDb).saveTransactionToUser(Mockito.isA(TransactionToProcessDto.class));
         //When & Then
-        mockMvc.perform(post("/v1/transaction/saveTransactionFromFactory")
+        mockMvc.perform(post("/v1/transactions")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -197,7 +197,7 @@ public class TransactionControllerTestSuite {
         TransactionServiceDb transactionServiceDb = mock(TransactionServiceDb.class);
         doNothing().when(transactionServiceDb).deleteAllTransactions();
         //When & Then
-        mockMvc.perform(delete("/v1/transaction/deleteAllTransactions")
+        mockMvc.perform(delete("/v1/transactions")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -209,7 +209,7 @@ public class TransactionControllerTestSuite {
         TransactionServiceDb transactionServiceDb = mock(TransactionServiceDb.class);
         doNothing().when(transactionServiceDb).deleteTransactionById(transactionId);
         //When & Then
-        mockMvc.perform(delete("/v1/transaction/deleteTransaction?transactionId=1")
+        mockMvc.perform(delete("/v1/transactions/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

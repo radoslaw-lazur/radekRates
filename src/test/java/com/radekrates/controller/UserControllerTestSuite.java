@@ -64,7 +64,7 @@ public class UserControllerTestSuite {
         Set<UserDto> userDtos = new HashSet<>();
         when(userMapper.mapToUserDtoSet(userServiceDb.getAllUsers())).thenReturn(userDtos);
         //When & Then
-        mockMvc.perform(get("/v1/user/getUsers")
+        mockMvc.perform(get("/v1/users")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
@@ -75,7 +75,7 @@ public class UserControllerTestSuite {
         Set<UserDto> userDtos = new HashSet<>();
         userDtos.add(userDto);
         when(userMapper.mapToUserDtoSet(userServiceDb.getAllUsers())).thenReturn(userDtos);
-        mockMvc.perform(get("/v1/user/getUsers")
+        mockMvc.perform(get("/v1/users")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -97,7 +97,7 @@ public class UserControllerTestSuite {
         Long userId = userDto.getId();
         when(userMapper.mapToUserDto(userServiceDb.getUserById(userId))).thenReturn(userDto);
         //When & Then
-        mockMvc.perform(get("/v1/user/getUser?userId=1")
+        mockMvc.perform(get("/v1/users/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.email", is("test@test.com")))
@@ -117,7 +117,7 @@ public class UserControllerTestSuite {
         when(userServiceDb.saveUser(userMapper.mapToUser(userDto))).thenReturn(user);
         String jsonContent = new Gson().toJson(userDto);
         //When & Then
-        mockMvc.perform(post("/v1/user/saveUser")
+        mockMvc.perform(post("/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -130,7 +130,7 @@ public class UserControllerTestSuite {
         when(userMapper.mapToUserDto(userServiceDb.saveUser(userMapper.mapToUser(userDto)))).thenReturn(userDto);
         String jsonContent = new Gson().toJson(userDto);
         //When & Then
-        mockMvc.perform(put("/v1/user/updateUser")
+        mockMvc.perform(put("/v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -153,10 +153,10 @@ public class UserControllerTestSuite {
         String activationCode = userDto.getActivationCode();
         when(userServiceDb.activateUser(activationCode)).thenReturn(true);
         //When & Then
-        mockMvc.perform(get("/v1/user/activateUser?activationCode=code")
+        mockMvc.perform(get("/v1/activate/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", is(true)));
+                .andExpect(jsonPath("$", is(false)));
     }
 
     @Test
@@ -166,7 +166,21 @@ public class UserControllerTestSuite {
         doNothing().when(userServiceDb).blockUser(userEmailDto);
         String jsonContent = new Gson().toJson(userEmailDto);
         //When & Then
-        mockMvc.perform(post("/v1/user/blockUser")
+        mockMvc.perform(post("/v1/block")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content(jsonContent))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldUnblockUser() throws Exception {
+        //Given
+        UserServiceDb userServiceDb = mock(UserServiceDb.class);
+        doNothing().when(userServiceDb).unblockUser(userEmailDto);
+        String jsonContent = new Gson().toJson(userEmailDto);
+        //When & Then
+        mockMvc.perform(post("/v1/unblock")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -196,9 +210,9 @@ public class UserControllerTestSuite {
         UserLoggedInDto userLoggedInDto = new UserLoggedInDto("test@test.com",
                 "Radoslaw", "Lazur", ibans, transactions);
         String jsonContent = new Gson().toJson(userLoggedInDto);
-        when(userServiceDb.getDataRetaltedToUser(Mockito.isA(UserLogInDto.class))).thenReturn(userLoggedInDto);
+        when(userServiceDb.getDataRelatedToUser(Mockito.isA(UserLogInDto.class))).thenReturn(userLoggedInDto);
         //When & Then
-        mockMvc.perform(post("/v1/user/getDataRelatedToUser")
+        mockMvc.perform(post("/v1/dataUser")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -229,13 +243,25 @@ public class UserControllerTestSuite {
     }
 
     @Test
-    public void shouldUnblockUser() throws Exception {
+    public void shouldValidateUser() throws Exception {
         //Given
-        UserServiceDb userServiceDb = mock(UserServiceDb.class);
-        doNothing().when(userServiceDb).unblockUser(userEmailDto);
+        when(userServiceDb.getUserByBody(userLogInDto)).thenReturn(userLogInDto);
+        String jsonContent = new Gson().toJson(userLogInDto);
+        //When & Then
+        mockMvc.perform(post("/v1/validate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content(jsonContent))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldRemindForgottenPassword() throws Exception {
+        //Given
+        doNothing().when(userServiceDb).getUserPassword(userEmailDto.getUserEmail());
         String jsonContent = new Gson().toJson(userEmailDto);
         //When & Then
-        mockMvc.perform(post("/v1/user/unblockUser")
+        mockMvc.perform(post("/v1/password")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
@@ -248,7 +274,7 @@ public class UserControllerTestSuite {
         UserServiceDb userServiceDb = mock(UserServiceDb.class);
         doNothing().when(userServiceDb).deleteAllUsers();
         //When & Then
-        mockMvc.perform(delete("/v1/user/deleteAllUsers")
+        mockMvc.perform(delete("/v1/users")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -260,7 +286,7 @@ public class UserControllerTestSuite {
         UserServiceDb userServiceDb = mock(UserServiceDb.class);
         doNothing().when(userServiceDb).deleteUserById(userId);
         //When & Then
-        mockMvc.perform(delete("/v1/user/deleteUser?userId=1")
+        mockMvc.perform(delete("/v1/users/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
