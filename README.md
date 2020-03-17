@@ -14,7 +14,7 @@
 ## Description
 
 This app is an exemplary currency exchange web application. 
-The application a new user to sign in, save IBAN numbers and finally create currency exchanges.
+The application allows a new user to sign in, save IBAN numbers and finally create currency exchanges.
 After signing in to the application activation E-mail is sent.
 Other functions are also provided by the applications e.g. 
 if the user is not activated there is no possibility to log in; 
