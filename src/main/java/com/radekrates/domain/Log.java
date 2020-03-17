@@ -29,4 +29,10 @@ public class Log {
     @NotNull
     @Column(name = "LOG_DATE")
     private LocalDateTime localDateTime;
+
+    public Log(String userEmail, String logInfo, LocalDateTime localDateTime) {
+        this.userEmail = userEmail;
+        this.logInfo = logInfo;
+        this.localDateTime = localDateTime;
+    }
 }

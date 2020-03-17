@@ -1,5 +1,6 @@
 package com.radekrates.service;
 
+import com.radekrates.domain.Log;
 import com.radekrates.domain.Mail;
 import com.radekrates.domain.Transaction;
 import com.radekrates.domain.User;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Slf4j
@@ -25,20 +27,22 @@ public class TransactionServiceDb {
     private TransactionRepository transactionRepository;
     private UserRepository userRepository;
     private EmailService emailService;
+    private LogServiceDb logServiceDb;
     private String temporaryUniqueStringChain = "";
     private static final String SUBJECT_TRANSACTION = "New Transaction from Radoslaw's Rates Exchanges";
 
     @Autowired
     public TransactionServiceDb(TransactionRepository transactionRepository, UserRepository userRepository,
-                                EmailService emailService) {
+                                EmailService emailService, LogServiceDb logServiceDb) {
         this.transactionRepository = transactionRepository;
         this.userRepository = userRepository;
         this.emailService = emailService;
+        this.logServiceDb = logServiceDb;
     }
 
-    public Transaction saveTransaction(final Transaction transaction) {
+    public void saveTransaction(final Transaction transaction) {
         log.info("Transaction has been saved in database: " + transaction.getDate());
-        return transactionRepository.save(transaction);
+        transactionRepository.save(transaction);
     }
 
     public void saveTransactionToUser(final TransactionToProcessDto transactionToProcessDto) {
@@ -51,6 +55,7 @@ public class TransactionServiceDb {
             user.getTransactions().add(transaction);
             transaction.setUser(user);
             userRepository.save(user);
+            logServiceDb.saveLog(new Log(transaction.getUserEmail(), transaction.getUniqueKeyChain(), LocalDateTime.now()));
             emailService.sendTransaction(new Mail(user.getEmail(), "Dear " + user.getUserFirstName() + ": "
                     + SUBJECT_TRANSACTION, ""), user, transaction);
             log.info("Transaction " + temporaryUniqueStringChain + " has been linked to " +
