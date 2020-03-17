@@ -21,6 +21,9 @@ public class Log {
     @Column(name = "LOG_ID")
     private Long id;
     @NotNull
+    @Column(name = "LOG_USER_EMAIL")
+    private String userEmail;
+    @NotNull
     @Column(name = "LOG_INFO")
     private String logInfo;
     @NotNull

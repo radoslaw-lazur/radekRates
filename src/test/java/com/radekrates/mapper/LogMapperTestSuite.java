@@ -27,8 +27,8 @@ public class LogMapperTestSuite {
     @Before
     public void init() {
         localDateTime = LocalDateTime.of(2020, 2, 4, 12, 11);
-        log = new Log(1L, "Log", localDateTime);
-        logDto = new LogDto(1L, "logDto", localDateTime);
+        log = new Log(1L, "test@test.com", "Log", localDateTime);
+        logDto = new LogDto(1L, "test@test.com", "logDto", localDateTime);
     }
 
     @Test
@@ -38,7 +38,9 @@ public class LogMapperTestSuite {
         LogDto mappedLogDto = logMapper.mapToLogDto(log);
         //Then
         assertEquals(log.getId(), mappedLogDto.getId());
+        assertEquals(log.getUserEmail(), mappedLogDto.getUserEmail());
         assertEquals(log.getLogInfo(), mappedLogDto.getLogInfo());
+        assertEquals(log.getLocalDateTime(), mappedLogDto.getLocalDateTime());
     }
 
     @Test
@@ -48,6 +50,7 @@ public class LogMapperTestSuite {
         Log mappedLog = logMapper.mapToLog(logDto);
         //Then
         assertEquals(logDto.getId(), mappedLog.getId());
+        assertEquals(logDto.getUserEmail(), mappedLog.getUserEmail());
         assertEquals(logDto.getLogInfo(), mappedLog.getLogInfo());
         assertEquals(logDto.getLocalDateTime(), mappedLog.getLocalDateTime());
     }
@@ -62,6 +65,7 @@ public class LogMapperTestSuite {
         //Then
         assertEquals(logs.size(), logDtos.size());
         assertEquals(logs.iterator().next().getId(), logDtos.iterator().next().getId());
+        assertEquals(logs.iterator().next().getUserEmail(), logDtos.iterator().next().getUserEmail());
         assertEquals(logs.iterator().next().getLogInfo(), logDtos.iterator().next().getLogInfo());
         assertEquals(logs.iterator().next().getLocalDateTime(), logDtos.iterator().next().getLocalDateTime());
     }

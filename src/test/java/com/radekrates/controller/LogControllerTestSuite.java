@@ -42,8 +42,8 @@ public class LogControllerTestSuite {
     @Before
     public void init() {
         localDateTime = LocalDateTime.of(2020, 2, 4, 12, 11);
-        log = new Log(1L, "Log", localDateTime);
-        logDto = new LogDto(1L, "logDto", localDateTime);
+        log = new Log(1L, "test@test.com", "Log", localDateTime);
+        logDto = new LogDto(1L, "test@test.com", "logDto", localDateTime);
     }
 
     @Test
@@ -70,6 +70,7 @@ public class LogControllerTestSuite {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].userEmail", is("test@test.com")))
                 .andExpect(jsonPath("$[0].logInfo", is("logDto")))
                 .andExpect(jsonPath("$[0].localDateTime", is("2020-02-04T12:11:00")));
     }
