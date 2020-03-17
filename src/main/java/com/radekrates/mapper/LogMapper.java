@@ -10,14 +10,14 @@ import java.util.stream.Collectors;
 @Component
 public class LogMapper {
     public Log mapToLog(final LogDto logDto) {
-        return new Log(logDto.getId(), logDto.getLogInfo());
+        return new Log(logDto.getId(), logDto.getLogInfo(), logDto.getLocalDateTime());
     }
     public LogDto mapToLogDto(final Log log) {
-        return new LogDto(log.getId(), log.getLogInfo());
+        return new LogDto(log.getId(), log.getLogInfo(), log.getLocalDateTime());
     }
     public Set<LogDto> mapToLogDtoSet(final Set<Log> logs) {
         return logs.stream()
-                .map(l -> new LogDto(l.getId(), l.getLogInfo()))
+                .map(l -> new LogDto(l.getId(), l.getLogInfo(), l.getLocalDateTime()))
                 .collect(Collectors.toSet());
     }
 }
