@@ -1,4 +1,4 @@
-# RadekRates Application</h1>
+# RadekRates Application Backend</h1>
 
 <p align="center">
   <img width="180" height="180" src="https://zapodaj.net/images/b3c5b34fde616.jpg">
