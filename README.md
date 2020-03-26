@@ -48,7 +48,7 @@ Check the Swagger UI endpoint!
 ## Start-up / Launch
 
 To start-up the application the repository needs to be cloned. When cloned, build the project using 'gradlew build' terminal command. 
-Make sure, if the H2 driver is imported in the application.properties file. 
+
 When the project is built, run the app.
 To operate the app there is a need to save the AdminRatio seed with Post command using Insomnia or other REST app. 
 The AdminRatio is needed to create the transactions based on currency choice. Every ratio concerning the puchased and sold currency can be set separately. 
