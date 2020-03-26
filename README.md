@@ -1,18 +1,20 @@
-# RadekRates Application</h1>
+# RadekRates Application Backend</h1>
 
 <p align="center">
   <img width="180" height="180" src="https://zapodaj.net/images/b3c5b34fde616.jpg">
 </p>
 
+[Download the video presenting the application](https://drive.google.com/file/d/1BYT20JfRvlgHwPI5srQfXUWT55aEl93I/view) 
+
 **This is the backend side of the application**  
 *To check out the frontend side of the application click the link shown below:*  
 
-[Radek Rates App Frontend Vaadin](https://github.com/radoslaw-lazur/radekRatesFrontVaadin)  
+[RadekRates App Frontend Vaadin](https://github.com/radoslaw-lazur/radekRatesFrontVaadin)  
   
 ## Description
 
 This app is an exemplary currency exchange web application. 
-The application a new user to sign in, save IBAN numbers and finally create currency exchanges.
+The application allows a new user to sign in, save IBAN numbers and finally create currency exchanges.
 After signing in to the application activation E-mail is sent.
 Other functions are also provided by the applications e.g. 
 if the user is not activated there is no possibility to log in; 
@@ -41,6 +43,8 @@ This is a Java app which uses Gradle build. The project has been made based on S
 The project is covered with tests using Junit, Mockito, and SpringBootTest. 
 This project was created using InteliJ Idea IDE.
 
+Check the Swagger UI endpoint!
+
 ## Start-up / Launch
 
 To start-up the application the repository needs to be cloned. When cloned, build the project using 'gradlew build' terminal command. 
@@ -65,3 +69,4 @@ I invite you to see the frontend side of this app here:
 [Radek Rates App Frontend Vaadin](https://github.com/radoslaw-lazur/radekRatesFrontVaadin)  
 
 If you have any questions please do not hesitate to ask: radoslaw.lazur@gmail.com
+
