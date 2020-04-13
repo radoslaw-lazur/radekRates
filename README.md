@@ -68,6 +68,5 @@ I invite you to see the frontend side of this app here:
 
 [Radek Rates App Frontend Vaadin](https://github.com/radoslaw-lazur/radekRatesFrontVaadin)  
 
-
 If you have any questions please do not hesitate to ask: radoslaw.lazur@gmail.com
 
