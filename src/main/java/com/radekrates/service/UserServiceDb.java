@@ -63,7 +63,6 @@ public class UserServiceDb {
         }
     }
 
-
     public boolean activateUser(final String activationCode) {
         User user = userRepository.findByActivationCode(activationCode).orElseThrow(UserNotFoundException::new);
         if (user.getActivationCode().equals(activationCode) && !user.isActive()) {
