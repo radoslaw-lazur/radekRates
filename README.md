@@ -1,7 +1,7 @@
 # RadekRates Application Backend</h1>
 
 <p align="center">
-  <img width="180" height="180" src="https://zapodaj.net/images/2576c884103cb.jpg">
+  <img width="180" height="180" src="https://zapodaj.net/images/77b0f87106f31.jpg">
 </p>
 
 [Download the video presenting the application](https://drive.google.com/file/d/1BYT20JfRvlgHwPI5srQfXUWT55aEl93I/view) 
